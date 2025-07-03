@@ -6,7 +6,7 @@ use Closure;
 use Illuminate\Contracts\View\View;
 use Illuminate\View\Component;
 
-class sidebarMenuDropdownItemDashboard extends Component
+class SidebarMenuStock extends Component
 {
     /**
      * Create a new component instance.
@@ -21,6 +21,6 @@ class sidebarMenuDropdownItemDashboard extends Component
      */
     public function render(): View|Closure|string
     {
-        return view('components.sidebar-menu-dropdown-item-dashboard');
+        return view('components.sidebar-menu-stock');
     }
 }
