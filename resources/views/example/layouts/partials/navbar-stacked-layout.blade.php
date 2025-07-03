@@ -3,7 +3,7 @@
         <div class="flex justify-between items-center max-w-screen-2xl mx-auto">
             <div class="flex justify-start items-center">
                 <a href="{{ url('/') }}" class="flex mr-14">
-                    <img src="{{ asset('static/images/logo.svg')}}" class="mr-3 h-8" alt="FlowBite Logo" />
+                    <img src="https://cdn-icons-png.flaticon.com/128/3638/3638928.png" class="h-8 mr-3" alt="FlowBite Logo" />
                     <span class="self-center hidden sm:flex text-2xl font-semibold whitespace-nowrap dark:text-white">Flowbite</span>
                 </a>
                 <!-- Desktop menu -->

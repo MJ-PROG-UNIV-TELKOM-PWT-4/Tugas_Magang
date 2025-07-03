@@ -3,7 +3,7 @@
     <div class="flex items-center justify-between">
       <div class="flex items-center justify-start">
         <a href="{{ url('/') }}" class="flex mr-4">
-          <img src="{{ asset('static/images/logo.svg')}}" class="h-8 mr-3" alt="Flowbite Logo" />
+          <img src="https://cdn-icons-png.flaticon.com/128/3638/3638928.png" class="h-8 mr-3" alt="FlowBite Logo" />
           <span class="self-center text-2xl font-semibold whitespace-nowrap dark:text-white">Flowbite</span>
         </a>
         <div class="hidden sm:flex sm:ml-6">
