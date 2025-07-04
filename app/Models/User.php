@@ -2,7 +2,6 @@
 
 namespace App\Models;
 
-// use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
@@ -13,7 +12,12 @@ class User extends Authenticatable
     use HasApiTokens, HasFactory, Notifiable;
 
     /**
-     * The attributes that are mass assignable.
+     * Table tidak memiliki kolom created_at dan updated_at
+     */
+    public $timestamps = false;
+
+    /**
+     * Kolom yang dapat diisi massal
      *
      * @var array<int, string>
      */
@@ -21,10 +25,11 @@ class User extends Authenticatable
         'name',
         'email',
         'password',
+        'role', // Ditambahkan agar role bisa disimpan
     ];
 
     /**
-     * The attributes that should be hidden for serialization.
+     * Kolom yang disembunyikan saat serialisasi
      *
      * @var array<int, string>
      */
@@ -34,7 +39,7 @@ class User extends Authenticatable
     ];
 
     /**
-     * The attributes that should be cast.
+     * Casting kolom ke tipe tertentu
      *
      * @var array<string, string>
      */

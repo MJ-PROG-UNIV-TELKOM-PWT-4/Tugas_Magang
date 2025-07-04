@@ -15,6 +15,11 @@ use App\Http\Controllers\Auth\RegisterController;
 |
 */
 
+// Rute untuk halaman dashboard
+Route::get('/', function () {
+    return redirect()->route('login.form');
+})->name('home');
+
 // Rute untuk halaman login
 Route::get('/login', function () {
     return view('example.content.authentication.sign-in', [
@@ -35,8 +40,38 @@ Route::get('/register', function () {
 // Rute untuk proses pendaftaran
 Route::post('/register', [RegisterController::class, 'register'])->name('register.post');
 
-// Rute untuk halaman dashboard
-Route::name('index-practice')->get('Dashboard', function () {
+// Rute untuk halaman lupa password
+Route::get('/forgot', function () {
+    return view('example.content.authentication.forgot-password', [
+        'title' => 'Forgot Password'
+    ]);
+})->name('Forgot Password.form');
+
+// Rute untuk proses lupa password
+Route::post('/forgot', [RegisterController::class, 'forgot'])->name('forgot.post');
+
+// Rute untuk halaman praktik
+Route::name('index-practice')->get('/Dashboard', function () {
+    return view('pages.practice.index');
+});
+
+// Proses login
+Route::post('/login', function () {
+    $email = request('email');
+    $password = request('password');
+
+    $user = DB::table('users')->where('email', $email)->first();
+
+    if (!$user || !Hash::check($password, $user->password)) {
+        return back()->withErrors(['login' => 'Email atau password salah.'])->withInput();
+    }
+
+    Session::put('user', $user);
+    return redirect('/dashboard');
+});
+
+// Routing ke halaman dashboard setelah login
+Route::get('/dashboard', function () {
     return view('pages.practice.index');
 });
 
