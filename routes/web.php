@@ -1,6 +1,8 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\Auth\LoginController;
+use App\Http\Controllers\Auth\RegisterController;
 
 /*
 |--------------------------------------------------------------------------
@@ -12,10 +14,33 @@ use Illuminate\Support\Facades\Route;
 | be assigned to the "web" middleware group. Make something great!
 |
 */
+
+// Rute untuk halaman login
+Route::get('/login', function () {
+    return view('example.content.authentication.sign-in', [
+        'title' => 'Login'
+    ]);
+})->name('login.form');
+
+// Rute untuk proses login
+Route::post('/login', [LoginController::class, 'authenticate'])->name('login.post');
+
+// Rute untuk halaman pendaftaran
+Route::get('/register', function () {
+    return view('example.content.authentication.sign-up', [
+        'title' => 'Register'
+    ]);
+})->name('register.form');
+
+// Rute untuk proses pendaftaran
+Route::post('/register', [RegisterController::class, 'register'])->name('register.post');
+
+// Rute untuk halaman dashboard
 Route::name('index-practice')->get('Dashboard', function () {
     return view('pages.practice.index');
 });
 
+// Rute untuk halaman praktik
 Route::name('practice.')->group(function () {
     Route::name('first')->get('Produk', function () {
         return view('pages.practice.1');
