@@ -3,11 +3,10 @@
         <div class="grid gap-12 xl:grid-cols-6 xl:gap-24">
             <div class="col-span-2">
                 <a href="{{ url('/') }}" class="flex mr-4">
-                    <img src="{{ asset('static/images/logo.svg') }}" class="h-8 mr-3" alt="Flowbite Logo" />
-                    <span class="self-center text-2xl font-semibold whitespace-nowrap dark:text-white">Flowbite</span>
+                    <img src="https://cdn-icons-png.flaticon.com/128/3638/3638928.png" class="h-8 mr-3" alt="FlowBite Logo" />
+                    <span class="self-center text-2xl font-semibold whitespace-nowrap dark:text-white">Stockify</span>
                   </a>
-                <p class="max-w-lg mt-4 text-gray-500 dark:text-gray-400">Flowbite is a UI library of elements &amp; components based on Tailwind
-                    CSS that can get you started building websites faster and more efficiently.</p>
+                <p class="max-w-lg mt-4 text-gray-500 dark:text-gray-400">Stockify adalah aplikasi web yang dirancang untuk membantu bisnis, khususnya yang memiliki gudang, dalam mengelola stok barang secara efisien dan akurat.</p>
             </div>
             <div>
                 <h3 class="mb-6 text-sm font-semibold text-gray-600 uppercase dark:text-white">Resources</h3>
@@ -73,7 +72,7 @@
             </div>
         </div>
         <hr class="my-8 border-gray-200 lg:my-12 dark:border-gray-700">
-        <span class="block text-center text-gray-600 dark:text-gray-400">© 2019-<span id="currentYear">2023</span> <a href="https://flowbite.com" target="_blank" rel="noreferrer">Flowbite</a>. All Rights Reserved.
+        <span class="block text-center text-gray-600 dark:text-gray-400">© 2025 <a href="https://flowbite.com" target="_blank" rel="noreferrer"></a>Stockify. All Rights Reserved.
         </span>
     </div>
 </footer>

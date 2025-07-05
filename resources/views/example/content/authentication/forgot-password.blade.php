@@ -2,8 +2,8 @@
 @section('content')
 <div class="flex flex-col items-center justify-center px-6 pt-8 mx-auto md:h-screen pt:mt-0 dark:bg-gray-900">
     <a href="{{ url('/')}}" class="flex items-center justify-center mb-8 text-2xl font-semibold lg:mb-10 dark:text-white">
-        <img src="{{ asset('static/images/logo.svg') }}" class="mr-4 h-11" alt="FlowBite Logo">
-        <span>Flowbite</span>
+        <img src="https://cdn-icons-png.flaticon.com/128/3638/3638928.png" class="h-8 mr-3" alt="FlowBite Logo" />
+        <span>Stockify</span>
     </a>
     <!-- Card -->
     <div class="w-full bg-white rounded-lg shadow md:mt-0 sm:max-w-md xl:p-0 dark:bg-gray-800">
@@ -14,7 +14,7 @@
             <p class="text-base font-normal text-gray-500 dark:text-gray-400">
                 Don't fret! Just type in your email and we will send you a code to reset your password!
             </p>
-            <form class="mt-8 space-y-6" action="#">
+            <form class="mt-8 space-y-6" method="POST" action="{{ route('forgot.post') }}">
                 <div>
                     <label for="email" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Your email</label>
                     <input type="email" name="email" id="email" class="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-500 focus:border-primary-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500" placeholder="name@company.com" required>
