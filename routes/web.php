@@ -1,98 +1,111 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\Auth\LoginController;
-use App\Http\Controllers\Auth\RegisterController;
+use App\Http\Controllers\Auth\SignInController;
+use App\Http\Controllers\Auth\SignUpController;
+use App\Http\Controllers\Auth\ForgotPasswordController;
+use App\Http\Controllers\Auth\ResetPasswordController;
 
 /*
 |--------------------------------------------------------------------------
 | Web Routes
 |--------------------------------------------------------------------------
 |
-| Here is where you can register web routes for your application. These
-| routes are loaded by the RouteServiceProvider and all of them will
-| be assigned to the "web" middleware group. Make something great!
+| Di sinilah kamu bisa mendaftarkan semua rute web untuk aplikasi kamu.
+| File ini dimuat oleh RouteServiceProvider dan semuanya otomatis masuk ke 
+| middleware group "web".
 |
 */
 
-// Rute untuk halaman dashboard
+// Redirect ke root
 Route::get('/', function () {
     return redirect()->route('login.form');
 })->name('home');
 
-// Rute untuk halaman login
+// Halaman login
 Route::get('/login', function () {
     return view('example.content.authentication.sign-in', [
         'title' => 'Login'
     ]);
 })->name('login.form');
 
-// Rute untuk proses login
-Route::post('/login', [LoginController::class, 'authenticate'])->name('login.post');
+// Proses Login
+Route::post('/login', [SignInController::class, 'authenticate'])->name('login.post');
 
-// Rute untuk halaman pendaftaran
+// Cek login
+Route::get('/cek-login', function () {
+    if (Auth::check()) {
+        return '    Sudah login sebagai: ' . Auth::user()->name;
+    } else {
+        return 'Belum login!';
+    }
+});
+
+// Cek Auth
+Route::get('/cek-auth', function () {
+    return Auth::user();
+});
+
+// Halaman registrasi
 Route::get('/register', function () {
     return view('example.content.authentication.sign-up', [
         'title' => 'Register'
     ]);
 })->name('register.form');
 
-// Rute untuk proses pendaftaran
-Route::post('/register', [RegisterController::class, 'register'])->name('register.post');
+// Proses sign-up
+Route::post('/register', [SignUpController::class, 'register'])->name('register.post');
 
-// Rute untuk halaman lupa password
+// Halaman forgotten password
 Route::get('/forgot', function () {
     return view('example.content.authentication.forgot-password', [
         'title' => 'Forgot Password'
     ]);
-})->name('Forgot Password.form');
+})->name('forgot.form');
 
-// Rute untuk proses lupa password
-Route::post('/forgot', [RegisterController::class, 'forgot'])->name('forgot.post');
+// Proses reset password
+Route::post('/forgot', [ForgotPasswordController::class, 'forgot'])->name('forgot.post');
 
-// Rute untuk halaman praktik
-Route::name('index-practice')->get('/Dashboard', function () {
-    return view('pages.practice.index');
-});
+// Halaman form reset password
+Route::get('/reset/{email}', function ($email) {
+    return view('example.content.authentication.reset-password', [
+        'email' => $email,
+        'title' => 'Reset Password'
+    ]);
+})->name('reset.form');
 
-// Proses login
-Route::post('/login', function () {
-    $email = request('email');
-    $password = request('password');
+// Proses reset password
+Route::post('/reset', [ResetPasswordController::class, 'reset'])->name('reset.post');
 
-    $user = DB::table('users')->where('email', $email)->first();
+// Proses logout
+Route::post('/logout', function () {
+    Auth::logout();
+    return redirect('/login')->with('success', 'Berhasil logout!');
+})->name('logout');
 
-    if (!$user || !Hash::check($password, $user->password)) {
-        return back()->withErrors(['login' => 'Email atau password salah.'])->withInput();
-    }
-
-    Session::put('user', $user);
-    return redirect('/dashboard');
-});
-
-// Routing ke halaman dashboard setelah login
+// Halaman dashboard utama
 Route::get('/dashboard', function () {
     return view('pages.practice.index');
-});
+})->name('dashboard');
 
-// Rute untuk halaman praktik
+// Routing ke halaman-halaman praktik
 Route::name('practice.')->group(function () {
-    Route::name('first')->get('Produk', function () {
+    Route::name('first')->get('produk', function () {
         return view('pages.practice.1');
     });
-    Route::name('second')->get('Stok', function () {
+    Route::name('second')->get('stok', function () {
         return view('pages.practice.2');
     });
-    Route::name('third')->get('Supplier', function () {
+    Route::name('third')->get('supplier', function () {
         return view('pages.practice.3');
     });
-    Route::name('fourth')->get('Pengguna', function () {
+    Route::name('fourth')->get('pengguna', function () {
         return view('pages.practice.4');
     });
-    Route::name('fifth')->get('Laporan', function () {
+    Route::name('fifth')->get('laporan', function () {
         return view('pages.practice.5');
     });
-    Route::name('sixth')->get('Pengaturan', function () {
+    Route::name('sixth')->get('pengaturan', function () {
         return view('pages.practice.6');
     });
 });

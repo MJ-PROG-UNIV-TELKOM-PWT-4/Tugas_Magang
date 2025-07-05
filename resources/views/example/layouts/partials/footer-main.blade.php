@@ -72,7 +72,7 @@
             </div>
         </div>
         <hr class="my-8 border-gray-200 lg:my-12 dark:border-gray-700">
-        <span class="block text-center text-gray-600 dark:text-gray-400">© 2025 <a href="https://flowbite.com" target="_blank" rel="noreferrer"></a>Stockify. All Rights Reserved.
+        <span class="block text-center text-gray-600 dark:text-gray-400">© 2025 <a href="https://flowbite.com" target="_blank" rel="noreferrer"></a>. All Rights Reserved.
         </span>
     </div>
 </footer>
