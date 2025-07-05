@@ -14,7 +14,7 @@ class User extends Authenticatable
     /**
      * Table tidak memiliki kolom created_at dan updated_at
      */
-    public $timestamps = false;
+    public $timestamps = false; 
 
     /**
      * Kolom yang dapat diisi massal

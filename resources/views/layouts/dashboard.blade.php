@@ -7,7 +7,7 @@
     <meta name="author" content="#">
     <meta name="generator" content="Laravel">
 
-    <title>Stockify</title>
+    <title>Dashboard</title>
     @vite(['resources/css/app.css','resources/js/app.js'])
     <link rel="canonical" href="{{ request()->fullUrl() }}">
 
