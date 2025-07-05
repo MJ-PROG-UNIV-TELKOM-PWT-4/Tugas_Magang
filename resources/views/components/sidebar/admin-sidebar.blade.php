@@ -7,4 +7,3 @@
     <x-sidebar-menu-pengguna routeName="practice.fifth" title="Laporan"/>
     <x-sidebar-menu-pengaturan routeName="practice.sixth" title="Pengaturan"/>
 </x-sidebar-dashboard>
--
