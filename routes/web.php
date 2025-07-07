@@ -56,6 +56,13 @@ Route::get('/register', function () {
 // Proses sign-up
 Route::post('/register', [SignUpController::class, 'register'])->name('register.post');
 
+// Halaman terms and conditions
+Route::get('/terms', function () {
+    return view('example.content.authentication.terms', [
+        'title' => 'Terms and Conditions'
+    ]);
+})->name('terms.form');
+
 // Halaman forgotten password
 Route::get('/forgot', function () {
     return view('example.content.authentication.forgot-password', [
