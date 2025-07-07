@@ -58,7 +58,7 @@
                 </div>
                 <div class="ml-3 text-sm">
                     <label for="terms" class="font-medium text-gray-900 dark:text-white">
-                        I accept the <a href="#" class="text-primary-700 hover:underline dark:text-primary-500">Terms and Conditions</a>
+                        I accept the <a href="{{ route('terms.form') }}" class="text-primary-700 hover:underline dark:text-primary-500">Terms and Conditions</a>
                     </label>
                 </div>
             </div>
