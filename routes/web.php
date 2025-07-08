@@ -57,11 +57,39 @@ Route::get('/register', function () {
 Route::post('/register', [SignUpController::class, 'register'])->name('register.post');
 
 // Halaman terms and conditions
-Route::get('/terms', function () {
+Route::get('/terms and conditions', function () {
     return view('example.content.authentication.terms', [
         'title' => 'Terms and Conditions'
     ]);
 })->name('terms.form');
+
+// Halaman privacy policy
+Route::get('/privacy policy', function () {
+    return view('example.content.authentication.privacy', [
+        'title' => 'Privacy Policy'
+    ]);
+})->name('privacy.form');
+
+// Halaman licensing
+Route::get('/licensing', function () {
+    return view('example.content.authentication.licensing', [
+        'title' => 'Licensing'
+    ]);
+})->name('licensing.form');
+
+// Halaman cookie policy
+Route::get('/cookie policy', function () {
+    return view('example.content.authentication.cookie', [
+        'title' => 'Cookie Policy'
+    ]);
+})->name('cookie.form');
+
+// Halaman contact
+Route::get('/contact', function () {
+    return view('example.content.authentication.contact', [
+        'title' => 'Contact'
+    ]);
+})->name('contact.form');
 
 // Halaman forgotten password
 Route::get('/forgot', function () {
