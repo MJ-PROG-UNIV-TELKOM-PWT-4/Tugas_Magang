@@ -5,6 +5,8 @@ use App\Http\Controllers\Auth\SignInController;
 use App\Http\Controllers\Auth\SignUpController;
 use App\Http\Controllers\Auth\ForgotPasswordController;
 use App\Http\Controllers\Auth\ResetPasswordController;
+use App\Http\Controllers\Auth\ProductController;
+use App\Http\Controllers\Auth\CategoriesController;
 
 /*
 |--------------------------------------------------------------------------
@@ -144,3 +146,17 @@ Route::name('practice.')->group(function () {
         return view('pages.practice.6');
     });
 });
+
+// Routing ke table Produk
+Route::get('/products', [ProductController::class, 'index'])->name('products.index');
+Route::post('/products', [ProductController::class, 'store'])->name('products.store');
+Route::get('/products/{product}', [ProductController::class, 'show'])->name('products.show');
+Route::put('/products/{product}', [ProductController::class, 'update'])->name('products.update');
+Route::delete('/products/{product}', [ProductController::class, 'destroy'])->name('products.destroy');
+
+// Routing ke table Kategori
+Route::get('/categories', [CategoriesController::class, 'index'])->name('categories.index');
+Route::post('/categories', [CategoriesController::class, 'store'])->name('categories.store');
+Route::get('/categories/{category}', [CategoriesController::class, 'show'])->name('categories.show');
+Route::put('/categories/{category}', [CategoriesController::class, 'update'])->name('categories.update');
+Route::delete('/categories/{category}', [CategoriesController::class, 'destroy'])->name('categories.destroy');
