@@ -15,6 +15,10 @@ class Product extends Model
         'name',
         'description',
         'minimum_stock',
+        'barang_masuk',
+        'tanggal_masuk',
+        'barang_keluar',
+        'tanggal_keluar'
     ];
 
     public function category()

@@ -24,8 +24,8 @@ class User extends Authenticatable
     protected $fillable = [
         'name',
         'email',
-        'password',
-        'role', // Ditambahkan agar role bisa disimpan
+        'password', // Pastikan ini terisi
+        'role',
     ];
 
     /**
@@ -35,13 +35,11 @@ class User extends Authenticatable
      */
     protected $hidden = [
         'password',
-        'remember_token',
+        'remember_token', // Hanya tidak menyembunyikan password
     ];
 
     /**
      * Casting kolom ke tipe tertentu
-     *
-     * @var array<string, string>
      */
     protected $casts = [
         'email_verified_at' => 'datetime',
