@@ -37,43 +37,45 @@
         <div class="inline-block min-w-full align-middle">  
             <div class="overflow-hidden shadow">  
                 <table id="product-table" class="min-w-full divide-y divide-gray-200 table-fixed dark:divide-gray-600">  
-                    <thead class="bg-gray-100 dark:bg-gray-700">  
-                        <tr>  
-                            <th scope="col" class="p-4 text-xs font-bold text-left text-gray-500 uppercase dark:text-gray-400">ID Kategori</th>  
-                            <th scope="col" class="p-4 text-xs font-bold text-left text-gray-500 uppercase dark:text-gray-400">ID Supplier</th>  
-                            <th scope="col" class="p-4 text-xs font-bold text-left text-gray-500 uppercase dark:text-gray-400">Nama Produk</th>  
-                            <th scope="col" class="p-4 text-xs font-bold text-left text-gray-500 uppercase dark:text-gray-400">Attribut Produk</th>  
-                            <th scope="col" class="p-4 text-xs font-bold text-left text-gray-500 uppercase dark:text-gray-400">Stok Minimum</th>  
-                            <th scope="col" class="p-4 text-xs font-bold text-left text-gray-500 uppercase dark:text-gray-400">Actions</th>  
-                        </tr>  
-                    </thead>  
-                    <tbody id="product-body" class="bg-white divide-y divide-gray-200 dark:bg-gray-800 dark:divide-gray-700">  
-                        @foreach($products as $product)  
-                        <tr class="product-row hover:bg-gray-100 dark:hover:bg-gray-700">   
-                            <td class="p-4 text-sm font-normal text-gray-500 whitespace-nowrap dark:text-gray-400">{{ $product->category_id }}</td>  
-                            <td class="p-4 text-sm font-normal text-gray-500 whitespace-nowrap dark:text-gray-400">{{ $product->supplier_id }}</td>  
-                            <td class="p-4 text-sm font-normal text-gray-500 whitespace-nowrap dark:text-gray-400">{{ $product->name }}</td>  
-                            <td class="p-4 text-sm font-normal text-gray-500 whitespace-nowrap dark:text-gray-400">{{ $product->description }}</td>  
-                            <td class="p-4 text-sm font-normal text-gray-500 whitespace-nowrap dark:text-gray-400">{{ $product->minimum_stock }}</td>  
-                            <td class="p-4 space-x-2 whitespace-nowrap">  
-                                <button type="button"   
-                                        onclick="openUpdateProductDrawer({{ $product->id }}, '{{ $product->name }}', {{ $product->category_id }}, {{ $product->supplier_id }}, '{{ addslashes($product->description) }}', {{ $product->minimum_stock }})"  
-                                        class="inline-flex items-center px-3 py-2 text-sm font-medium text-center text-white rounded-lg bg-primary-700 hover:bg-primary-800 focus:ring-4 focus:ring-primary-300 dark:bg-primary-600 dark:hover:bg-primary-700 dark:focus:ring-primary-800">  
-                                    Update  
-                                </button>  
-                                <form action="{{ route('products.destroy', $product->id) }}" method="POST" style="display: inline;">  
-                                    @csrf  
-                                    @method('DELETE')  
-                                    <button type="submit"   
-                                            onclick="return confirm('Are you sure you want to delete this product?')"  
-                                            class="inline-flex items-center px-3 py-2 text-sm font-medium text-center text-white bg-red-700 rounded-lg hover:bg-red-800 focus:ring-4 focus:ring-red-300 dark:focus:ring-red-900">  
-                                        Delete  
-                                    </button>  
-                                </form>  
-                            </td>  
-                        </tr>  
-                        @endforeach  
-                    </tbody>  
+                <thead class="bg-gray-100 dark:bg-gray-700">
+                    <tr>
+                        <th scope="col" class="p-4 text-xs font-bold text-left text-gray-500 uppercase dark:text-gray-400">No</th>
+                        <th scope="col" class="p-4 text-xs font-bold text-left text-gray-500 uppercase dark:text-gray-400">ID Kategori</th>
+                        <th scope="col" class="p-4 text-xs font-bold text-left text-gray-500 uppercase dark:text-gray-400">ID Supplier</th>
+                        <th scope="col" class="p-4 text-xs font-bold text-left text-gray-500 uppercase dark:text-gray-400">Nama Produk</th>
+                        <th scope="col" class="p-4 text-xs font-bold text-left text-gray-500 uppercase dark:text-gray-400">Attribut Produk</th>
+                        <th scope="col" class="p-4 text-xs font-bold text-left text-gray-500 uppercase dark:text-gray-400">Stok Minimum</th>
+                        <th scope="col" class="p-4 text-xs font-bold text-left text-gray-500 uppercase dark:text-gray-400">Actions</th>
+                    </tr>
+                    </thead>
+                    <tbody id="product-body" class="bg-white divide-y divide-gray-200 dark:bg-gray-800 dark:divide-gray-700">
+                        @foreach($products as $index => $product)
+                        <tr class="product-row hover:bg-gray-100 dark:hover:bg-gray-700">
+                            <td class="p-4 text-sm font-normal text-gray-500 whitespace-nowrap dark:text-gray-400">{{ $index + 1 }}</td>
+                            <td class="p-4 text-sm font-normal text-gray-500 whitespace-nowrap dark:text-gray-400">{{ $product->category_id }}</td>
+                            <td class="p-4 text-sm font-normal text-gray-500 whitespace-nowrap dark:text-gray-400">{{ $product->supplier_id }}</td>
+                            <td class="p-4 text-sm font-normal text-gray-500 whitespace-nowrap dark:text-gray-400">{{ $product->name }}</td>
+                            <td class="p-4 text-sm font-normal text-gray-500 whitespace-nowrap dark:text-gray-400">{{ $product->description }}</td>
+                            <td class="p-4 text-sm font-normal text-gray-500 whitespace-nowrap dark:text-gray-400">{{ $product->minimum_stock }}</td>
+                            <td class="p-4 space-x-2 whitespace-nowrap">
+                                <button type="button" 
+                                        onclick="openUpdateProductDrawer({{ $product->id }}, '{{ $product->name }}', {{ $product->category_id }}, {{ $product->supplier_id }}, '{{ addslashes($product->description) }}', {{ $product->minimum_stock }})"
+                                        class="inline-flex items-center px-3 py-2 text-sm font-medium text-center text-white rounded-lg bg-primary-700 hover:bg-primary-800 focus:ring-4 focus:ring-primary-300 dark:bg-primary-600 dark:hover:bg-primary-700 dark:focus:ring-primary-800">
+                                    Update
+                                </button> 
+                                <form action="{{ route('products.destroy', $product->id) }}" method="POST" style="display: inline;">
+                                    @csrf
+                                    @method('DELETE')
+                                    <button type="submit" 
+                                            onclick="return confirm('Are you sure you want to delete this product?')"
+                                            class="inline-flex items-center px-3 py-2 text-sm font-medium text-center text-white bg-red-700 rounded-lg hover:bg-red-800 focus:ring-4 focus:ring-red-300 dark:focus:ring-red-900">
+                                        Delete
+                                    </button>
+                                </form>
+                            </td>
+                        </tr>
+                        @endforeach
+                    </tbody>
                 </table>  
             </div>  
         </div>  
@@ -121,9 +123,9 @@
                         </tr>  
                     </thead>  
                     <tbody id="category-body" class="bg-white divide-y divide-gray-200 dark:bg-gray-800 dark:divide-gray-700">  
-                        @foreach($categories as $category)  
+                        @foreach($categories as $index => $category)  <!-- Menambahkan $index di sini -->
                         <tr class="category-row hover:bg-gray-100 dark:hover:bg-gray-700">  
-                            <td class="p-4 text-sm font-normal text-gray-500 whitespace-nowrap dark:text-gray-400">{{ $category->id }}</td>  
+                            <td class="p-4 text-sm font-normal text-gray-500 whitespace-nowrap dark:text-gray-400">{{ $index + 1 }}</td>  <!-- Menampilkan nomor urut -->
                             <td class="p-4 text-sm font-normal text-gray-500 whitespace-nowrap dark:text-gray-400">{{ $category->name }}</td>  
                             <td class="p-4 text-sm font-normal text-gray-500 whitespace-nowrap dark:text-gray-400">{{ $category->description }}</td>  
                             <td class="p-4 space-x-2 whitespace-nowrap">  
@@ -144,7 +146,7 @@
                             </td>  
                         </tr>  
                         @endforeach  
-                    </tbody>  
+                    </tbody> 
                 </table>  
             </div>  
         </div>  
@@ -185,21 +187,38 @@
                 <label for="create-minimum_stock" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Stok Minimum</label>  
                 <input type="number" name="minimum_stock" id="create-minimum_stock" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500" placeholder="Minimum Stock" required>  
             </div>  
+            <div>  
+                <label for="create-barang_masuk" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Barang Masuk</label>  
+                <input type="number" name="barang_masuk" id="create-barang_masuk" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500" placeholder="Jumlah barang masuk" required>  
+            </div>  
+            <div>  
+                <label for="create-tanggal_masuk" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Tanggal Masuk</label>  
+                <input type="date" name="tanggal_masuk" id="create-tanggal_masuk" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500" required>  
+            </div>  
+            <div>  
+                <label for="create-barang_keluar" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Barang Keluar</label>  
+                <input type="number" name="barang_keluar" id="create-barang_keluar" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500" placeholder="Jumlah barang keluar" required>  
+            </div>  
+            <div>  
+                <label for="create-tanggal_keluar" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Tanggal Keluar</label>  
+                <input type="date" name="tanggal_keluar" id="create-tanggal_keluar" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500">  
+            </div>  
         </div>  
-        <div class="absolute bottom-0 left-0 flex justify-center w-full p-4 space-x-4">  
-            <button type="submit" class="text-white w-full justify-center bg-primary-700 hover:bg-primary-800 focus:ring-4 focus:outline-none focus:ring-primary-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-primary-600 dark:hover:bg-primary-700 dark:focus:ring-primary-800">  
+        
+        <!-- Button Section -->
+        <div class="flex justify-center p-4 space-x-4">  
+            <button type="submit" class="text-white w-1/2 justify-center bg-primary-700 hover:bg-primary-800 focus:ring-4 focus:outline-none focus:ring-primary-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-primary-600 dark:hover:bg-primary-700 dark:focus:ring-primary-800">  
                 Add Product  
             </button>  
-            <button type="button" onclick="toggleProductDrawer()" class="inline-flex w-full justify-center text-gray-500 items-center bg-white hover:bg-gray-100 focus:ring-4 focus:outline-none focus:ring-primary-300 rounded-lg border border-gray-200 text-sm font-medium px-5 py-2.5 hover:text-gray-900 focus:z-10 dark:bg-gray-700 dark:text-gray-300 dark:border-gray-500 dark:hover:text-white dark:hover:bg-gray-600 dark:focus:ring-gray-600">  
+            <button type="button" onclick="toggleProductDrawer()" class="inline-flex w-1/2 justify-center text-gray-500 items-center bg-white hover:bg-gray-100 focus:ring-4 focus:outline-none focus:ring-primary-300 rounded-lg border border-gray-200 text-sm font-medium px-5 py-2.5 hover:text-gray-900 focus:z-10 dark:bg-gray-700 dark:text-gray-300 dark:border-gray-500 dark:hover:text-white dark:hover:bg-gray-600 dark:focus:ring-gray-600">  
                 Cancel  
             </button>  
-        </div>  
+        </div>
     </form>  
-</div>  
+</div>
 
 <!-- Overlay untuk menutup drawer kategori -->  
 <div id="category-drawer-overlay" class="fixed inset-0 bg-black bg-opacity-50 z-30 hidden" onclick="toggleCategoryDrawer()"></div>  
-
 <!-- Drawer untuk Tambah Kategori -->  
 <div id="drawer-create-category-default" class="fixed top-0 right-0 z-40 w-full h-screen max-w-xs p-4 overflow-y-auto transition-transform duration-300 transform translate-x-full bg-white dark:bg-gray-800" tabindex="-1">  
     <h5 class="inline-flex items-center mb-6 text-sm font-semibold text-gray-500 uppercase dark:text-gray-400 cursor-move">New Category</h5>  

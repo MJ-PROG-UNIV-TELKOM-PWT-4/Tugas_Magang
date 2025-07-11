@@ -33,22 +33,21 @@ class ProductController extends Controller
 
     public function store(Request $request) // Menyimpan produk baru
     {
-        $request->validate([
-            'category_id' => 'required|integer',
-            'supplier_id' => 'required|integer',
-            'name' => 'required|string|max:255',
-            'description' => 'nullable|string',
-            'minimum_stock' => 'required|integer|min:0',
-        ]);
+    $request->validate([
+        'category_id' => 'required|integer',
+        'supplier_id' => 'required|integer',
+        'name' => 'required|string|max:255',
+        'description' => 'nullable|string',
+        'minimum_stock' => 'required|integer|min:0',
+        'barang_masuk' => 'required|integer|min:0',
+        'tanggal_masuk' => 'required|date',
+        'barang_keluar' => 'required|integer|min:0',
+        'tanggal_keluar' => 'nullable|date',
+    ]);
 
-        Product::create($request->all());
+    Product::create($request->all());
 
-        return redirect()->route('products.index')->with('success', 'Product created successfully.');
-    }
-
-    public function show(Product $product) // Menampilkan detail produk
-    {
-        return view('pages.practice.show', compact('product')); // Update path view sesuai
+    return redirect()->route('products.index')->with('success', 'Product created successfully.');   
     }
 
     public function update(Request $request, Product $product) // Memperbarui produk

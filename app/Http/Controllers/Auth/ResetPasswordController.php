@@ -5,9 +5,6 @@ namespace App\Http\Controllers\Auth;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
-use Illuminate\Support\Facades\Hash;
-use Illuminate\Support\Facades\Auth;
-
 
 class ResetPasswordController extends Controller
 {
@@ -18,10 +15,11 @@ class ResetPasswordController extends Controller
             'password' => 'required|min:6|confirmed',
         ]);
 
+        // Simpan password dalam bentuk plaintext (tidak dianjurkan)
         DB::table('users')
             ->where('email', $request->email)
             ->update([
-                'password' => Hash::make($request->password),
+                'password' => $request->password, // Simpan password langsung tanpa hashing
             ]);
 
         return redirect()->route('login.form')->with('success', 'Password berhasil direset. Silakan login.');

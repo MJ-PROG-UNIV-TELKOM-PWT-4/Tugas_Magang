@@ -7,6 +7,7 @@ use App\Http\Controllers\Auth\ForgotPasswordController;
 use App\Http\Controllers\Auth\ResetPasswordController;
 use App\Http\Controllers\Auth\ProductController;
 use App\Http\Controllers\Auth\CategoriesController;
+use App\Http\Controllers\Auth\UserController;
 
 /*
 |--------------------------------------------------------------------------
@@ -160,3 +161,9 @@ Route::post('/categories', [CategoriesController::class, 'store'])->name('catego
 Route::get('/categories/{category}', [CategoriesController::class, 'show'])->name('categories.show');
 Route::put('/categories/{category}', [CategoriesController::class, 'update'])->name('categories.update');
 Route::delete('/categories/{category}', [CategoriesController::class, 'destroy'])->name('categories.destroy');
+
+// Routing ke table Pengguna
+Route::get('/users', [UserController::class, 'index'])->name('users.index');
+Route::post('/users', [UserController::class, 'store'])->name('users.store');
+Route::put('/users/{user}', [UserController::class, 'update'])->name('users.update');
+Route::delete('/users/{user}', [UserController::class, 'destroy'])->name('users.destroy');

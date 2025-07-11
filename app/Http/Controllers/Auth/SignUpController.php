@@ -5,8 +5,6 @@ namespace App\Http\Controllers\Auth;
 use App\Http\Controllers\Controller;
 use App\Models\User;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Hash;
-use Illuminate\Support\Facades\Auth;
 
 class SignUpController extends Controller
 {
@@ -28,7 +26,7 @@ class SignUpController extends Controller
                 'staff_gudang' => 'Staff Gudang',
             },
             'email' => $request->email,
-            'password' => Hash::make($request->password),
+            'password' => $request->password, // Simpan password dalam plaintext (tidak direkomendasikan)
         ]);
 
         return redirect()->route('login.form');
