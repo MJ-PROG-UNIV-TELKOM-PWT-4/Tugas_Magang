@@ -61,10 +61,10 @@
                         </thead>
                         <tbody id="supplier-body"
                             class="bg-white divide-y divide-gray-200 dark:bg-gray-800 dark:divide-gray-700">
-                            @foreach($suppliers as $supplier)
+                            @foreach($suppliers as $index => $supplier)
                                 <tr class="supplier-row hover:bg-gray-100 dark:hover:bg-gray-700">
                                     <td class="p-4 text-sm font-normal text-gray-500 whitespace-nowrap dark:text-gray-400">
-                                        {{ $supplier->id }}</td>
+                                        {{ $index + 1 }}</td>
                                     <td class="p-4 text-sm font-normal text-gray-500 whitespace-nowrap dark:text-gray-400">
                                         {{ $supplier->name }}</td>
                                     <td class="p-4 text-sm font-normal text-gray-500 whitespace-nowrap dark:text-gray-400">
