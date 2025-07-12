@@ -9,6 +9,8 @@ use App\Http\Controllers\Auth\ProductController;
 use App\Http\Controllers\Auth\CategoriesController;
 use App\Http\Controllers\Auth\UserController;
 use App\Http\Controllers\Auth\StockController;
+use App\Http\Controllers\Auth\SupplierController;
+use App\Http\Controllers\Auth\LaporanController;
 
 /*
 |--------------------------------------------------------------------------
@@ -179,3 +181,6 @@ Route::delete('/users/{user}', [UserController::class, 'destroy'])->name('users.
 Route::get('/stock', [StockController::class, 'index'])->name('stock.index');
 Route::post('/stock/update/{productId}', [StockController::class, 'updateStockOut'])->name('stock.update');
 Route::post('/stock/minimum/{productId}', [StockController::class, 'updateMinimumStock'])->name('stock.minimum');
+
+// Routing ke table Laporan
+Route::get('/laporan', [LaporanController::class, 'index'])->name('laporan.index');
