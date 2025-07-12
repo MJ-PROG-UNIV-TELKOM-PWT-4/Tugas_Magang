@@ -31,23 +31,24 @@ class ProductController extends Controller
     return view('pages.practice.1', compact('products'));
     }   
 
-    public function store(Request $request) // Menyimpan produk baru
+    public function store(Request $request)
     {
     $request->validate([
         'category_id' => 'required|integer',
         'supplier_id' => 'required|integer',
         'name' => 'required|string|max:255',
         'description' => 'nullable|string',
-        'minimum_stock' => 'required|integer|min:0',
         'barang_masuk' => 'required|integer|min:0',
         'tanggal_masuk' => 'required|date',
-        'barang_keluar' => 'required|integer|min:0',
-        'tanggal_keluar' => 'nullable|date',
+        'status' => 'required|in:Pending,Diterima,Ditolak,Dikeluarkan',
     ]);
 
-    Product::create($request->all());
+    \Log::info($request->all());
 
-    return redirect()->route('products.index')->with('success', 'Product created successfully.');   
+    // Pastikan data disimpan ke database
+    Product::create($request->except(['barang_keluar', 'tanggal_keluar'])); // Tambahkan jika diperlukan, sesuaikan dengan input HTML
+
+    return redirect()->route('products.index')->with('success', 'Product created successfully.');
     }
 
     public function update(Request $request, Product $product) // Memperbarui produk
@@ -57,7 +58,6 @@ class ProductController extends Controller
             'supplier_id' => 'required|integer',
             'name' => 'required|string|max:255',
             'description' => 'nullable|string',
-            'minimum_stock' => 'required|integer|min:0',
         ]);
 
         $product->update($request->all());
