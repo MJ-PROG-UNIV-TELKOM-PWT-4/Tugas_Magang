@@ -17,6 +17,7 @@ class Product extends Model
         'minimum_stock',
         'barang_masuk',
         'tanggal_masuk',
+        'status',
         'barang_keluar',
         'tanggal_keluar'
     ];
