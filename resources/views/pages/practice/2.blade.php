@@ -27,11 +27,11 @@
                     <thead class="bg-gray-100 dark:bg-gray-700">
                         <tr>
                             <th class="p-4 text-xs font-bold text-left text-gray-500 uppercase dark:text-gray-400">No</th>
-                            <th class="p-4 text-xs font-bold text-left text-gray-500 uppercase dark:text-gray-400">Produk</th>
-                            <th class="p-4 text-xs font-bold text-left text-gray-500 uppercase dark:text-gray-400">Masuk</th>
+                            <th class="p-4 text-xs font-bold text-left text-gray-500 uppercase dark:text-gray-400">Nama Produk</th>
+                            <th class="p-4 text-xs font-bold text-left text-gray-500 uppercase dark:text-gray-400">Barang Masuk</th>
                             <th class="p-4 text-xs font-bold text-left text-gray-500 uppercase dark:text-gray-400">Tanggal Masuk</th>
                             <th class="p-4 text-xs font-bold text-left text-gray-500 uppercase dark:text-gray-400">Status</th>
-                            <th class="p-4 text-xs font-bold text-left text-gray-500 uppercase dark:text-gray-400">Keluar</th>
+                            <th class="p-4 text-xs font-bold text-left text-gray-500 uppercase dark:text-gray-400">Barang Keluar</th>
                             <th class="p-4 text-xs font-bold text-left text-gray-500 uppercase dark:text-gray-400">Tanggal Keluar</th>
                             <th class="p-4 text-xs font-bold text-left text-gray-500 uppercase dark:text-gray-400">Sisa Stok</th>
                             <th class="p-4 text-xs font-bold text-left text-gray-500 uppercase dark:text-gray-400">Action</th>
@@ -67,8 +67,8 @@
 </div>
 
 <!-- Tabel Stok Minimum -->
-<div class="p-4 bg-white dark:bg-gray-800 border-t border-gray-200 dark:border-gray-700 mt-8">
-    <h1 class="text-xl font-semibold text-gray-900 sm:text-2xl dark:text-white">Stok Minimum</h1>
+<div class="p-4 bg-white dark:bg-gray-800 border-t border-gray-200 dark:border-gray-700 mt-1.5">
+    <h1 class="text-xl font-semibold text-gray-900 sm:text-2xl dark:text-white">Manage Stok Minimum</h1>
 </div>
 
 <div class="flex flex-col">
@@ -79,7 +79,7 @@
                     <thead class="bg-gray-100 dark:bg-gray-700">
                         <tr>
                             <th class="p-4 text-xs font-bold text-left text-gray-500 uppercase dark:text-gray-400">No</th>
-                            <th class="p-4 text-xs font-bold text-left text-gray-500 uppercase dark:text-gray-400">Produk</th>
+                            <th class="p-4 text-xs font-bold text-left text-gray-500 uppercase dark:text-gray-400">Nama Produk</th>
                             <th class="p-4 text-xs font-bold text-left text-gray-500 uppercase dark:text-gray-400">Stok Minimum</th>
                             <th class="p-4 text-xs font-bold text-left text-gray-500 uppercase dark:text-gray-400">Action</th>
                         </tr>
@@ -121,6 +121,8 @@
     <form method="POST" id="stockForm" action="">
         @csrf
         <input type="hidden" name="product_id" id="product_id">
+        <input type="hidden" name="barang_masuk" id="barang_masuk" value="{{ $product->barang_masuk }}">
+        <input type="hidden" name="product_id" id="product_id">
 
         <div class="space-y-4">
             <div>
@@ -148,10 +150,10 @@
 
         <div class="absolute bottom-0 left-0 flex justify-center w-full p-4 space-x-4">
             <button type="submit" class="text-white w-full justify-center bg-primary-700 hover:bg-primary-800 focus:ring-4 focus:outline-none focus:ring-primary-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-primary-600 dark:hover:bg-primary-700 dark:focus:ring-primary-800">
-                Simpan
+                Update Stock
             </button>
             <button type="button" onclick="toggleStockDrawer()" class="inline-flex w-full justify-center text-gray-500 items-center bg-white hover:bg-gray-100 focus:ring-4 focus:outline-none focus:ring-primary-300 rounded-lg border border-gray-200 text-sm font-medium px-5 py-2.5 hover:text-gray-900 focus:z-10 dark:bg-gray-700 dark:text-gray-300 dark:border-gray-500 dark:hover:text-white dark:hover:bg-gray-600 dark:focus:ring-gray-600">
-                Batal
+                Cancel
             </button>
         </div>
     </form>
@@ -161,7 +163,7 @@
 
 <!-- Drawer untuk Update Stok Minimum -->
 <div id="drawer-update-minimum-stock" class="fixed top-0 right-0 z-40 w-full h-screen max-w-xs p-4 overflow-y-auto transition-transform duration-300 transform translate-x-full bg-white dark:bg-gray-800" tabindex="-1">
-    <h5 class="inline-flex items-center mb-6 text-sm font-semibold text-gray-500 uppercase dark:text-gray-400 cursor-move">Update Stok Minimum</h5>
+    <h5 class="inline-flex items-center mb-4 text-sm font-semibold text-gray-500 uppercase dark:text-gray-400 cursor-move">Update Stok Minimum</h5>
     <button type="button" onclick="toggleMinimumStockDrawer()"
         class="text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm p-1.5 absolute top-2.5 right-2.5 inline-flex items-center dark:hover:bg-gray-600 dark:hover:text-white">
         <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
@@ -184,11 +186,11 @@
         <div class="absolute bottom-0 left-0 flex justify-center w-full p-4 space-x-4">
             <button type="submit"
                 class="text-white w-full justify-center bg-primary-700 hover:bg-primary-800 focus:ring-4 focus:outline-none focus:ring-primary-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-primary-600 dark:hover:bg-primary-700 dark:focus:ring-primary-800">
-                Simpan
+                Update Minimum Stock
             </button>
             <button type="button" onclick="toggleMinimumStockDrawer()"
                 class="inline-flex w-full justify-center text-gray-500 items-center bg-white hover:bg-gray-100 focus:ring-4 focus:outline-none focus:ring-primary-300 rounded-lg border border-gray-200 text-sm font-medium px-5 py-2.5 hover:text-gray-900 focus:z-10 dark:bg-gray-700 dark:text-gray-300 dark:border-gray-500 dark:hover:text-white dark:hover:bg-gray-600 dark:focus:ring-gray-600">
-                Batal
+                Cancel
             </button>
         </div>
     </form>
@@ -212,12 +214,24 @@
     function toggleKeluarForm() {
         const statusSelect = document.getElementById('status');
         const keluarFields = document.getElementById('keluar-fields');
+        const barangKeluarInput = document.getElementById('barang_keluar');
+        const tanggalKeluarInput = document.getElementById('tanggal_keluar');
 
-        // Jika status "Dikeluarkan", tampilkan field terkait
+        // Jika status "Dikeluarkan", tampilkan field terkait dan set required
         if (statusSelect.value === 'Dikeluarkan') {
             keluarFields.classList.remove('hidden');
+            barangKeluarInput.setAttribute('required', 'required');
+            tanggalKeluarInput.setAttribute('required', 'required');
+        } else if (statusSelect.value === 'Ditolak') {
+            // Set barang_masuk menjadi 0 jika status "Ditolak"
+            document.getElementById('barang_masuk').value = 0; // Pastikan untuk menambahkan field ini ke formulir
         } else {
+            // Ketika status bukan "Dikeluarkan" atau "Ditolak"
             keluarFields.classList.add('hidden');
+            
+            // Menghapus 'required' pada input tetapi tidak menghapus valuenya
+            barangKeluarInput.removeAttribute('required');
+            tanggalKeluarInput.removeAttribute('required');
         }
     }
 

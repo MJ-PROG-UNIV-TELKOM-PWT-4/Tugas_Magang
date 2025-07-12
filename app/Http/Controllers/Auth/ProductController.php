@@ -33,6 +33,7 @@ class ProductController extends Controller
 
     public function store(Request $request)
     {
+    // Validasi input
     $request->validate([
         'category_id' => 'required|integer',
         'supplier_id' => 'required|integer',
@@ -43,12 +44,24 @@ class ProductController extends Controller
         'status' => 'required|in:Pending,Diterima,Ditolak,Dikeluarkan',
     ]);
 
-    \Log::info($request->all());
+    // Menentukan apakah produk sudah ada
+    $existingProduct = Product::where('category_id', $request->category_id)
+        ->where('supplier_id', $request->supplier_id)
+        ->where('name', $request->name)
+        ->where('description', $request->description)
+        ->first();
 
-    // Pastikan data disimpan ke database
-    Product::create($request->except(['barang_keluar', 'tanggal_keluar'])); // Tambahkan jika diperlukan, sesuaikan dengan input HTML
+    if ($existingProduct) {
+        // Jika produk ada, tambahkan barang_masuk dan update tanggal_masuk
+        $existingProduct->barang_masuk += $request->barang_masuk; // Tambahkan jumlah barang masuk yang baru
+        $existingProduct->tanggal_masuk = $request->tanggal_masuk; // Update tanggal masuk
+        $existingProduct->save(); // Simpan perubahan
+    } else {
+        // Jika produk belum ada, buat produk baru
+        Product::create($request->except(['barang_keluar', 'tanggal_keluar'])); // Sesuaikan dengan input HTML
+    }
 
-    return redirect()->route('products.index')->with('success', 'Product created successfully.');
+    return redirect()->route('products.index')->with('success', 'Product created or updated successfully.');
     }
 
     public function update(Request $request, Product $product) // Memperbarui produk

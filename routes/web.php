@@ -12,6 +12,7 @@ use App\Http\Controllers\Auth\StockController;
 use App\Http\Controllers\Auth\SupplierController;
 use App\Http\Controllers\Auth\LaporanController;
 
+
 /*
 |--------------------------------------------------------------------------
 | Web Routes
