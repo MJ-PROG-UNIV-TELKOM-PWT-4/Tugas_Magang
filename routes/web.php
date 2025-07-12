@@ -8,6 +8,7 @@ use App\Http\Controllers\Auth\ResetPasswordController;
 use App\Http\Controllers\Auth\ProductController;
 use App\Http\Controllers\Auth\CategoriesController;
 use App\Http\Controllers\Auth\UserController;
+use App\Http\Controllers\Auth\StockController;
 
 /*
 |--------------------------------------------------------------------------
@@ -162,8 +163,19 @@ Route::get('/categories/{category}', [CategoriesController::class, 'show'])->nam
 Route::put('/categories/{category}', [CategoriesController::class, 'update'])->name('categories.update');
 Route::delete('/categories/{category}', [CategoriesController::class, 'destroy'])->name('categories.destroy');
 
+// Routing ke table Supplier
+Route::get('/suppliers', [SupplierController::class, 'index'])->name('suppliers.index');
+Route::post('/suppliers', [SupplierController::class, 'store'])->name('suppliers.store');
+Route::get('/suppliers/{supplier}', [SupplierController::class, 'show'])->name('suppliers.show');
+Route::put('/suppliers/{supplier}', [SupplierController::class, 'update'])->name('suppliers.update');
+Route::delete('/suppliers/{supplier}', [SupplierController::class, 'destroy'])->name('suppliers.destroy');
+
 // Routing ke table Pengguna
 Route::get('/users', [UserController::class, 'index'])->name('users.index');
 Route::post('/users', [UserController::class, 'store'])->name('users.store');
 Route::put('/users/{user}', [UserController::class, 'update'])->name('users.update');
 Route::delete('/users/{user}', [UserController::class, 'destroy'])->name('users.destroy');
+
+Route::get('/stock', [StockController::class, 'index'])->name('stock.index');
+Route::post('/stock/update/{productId}', [StockController::class, 'updateStockOut'])->name('stock.update');
+Route::post('/stock/minimum/{productId}', [StockController::class, 'updateMinimumStock'])->name('stock.minimum');

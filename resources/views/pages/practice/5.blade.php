@@ -1,48 +1,177 @@
 @extends('layouts.dashboard')
-
 @section('content')
-<div class="container mx-auto px-4 py-8">
-    <div class="flex items-center justify-between mb-6">
-        <h2 class="text-2xl font-bold text-gray-800 dark:text-white">📦 Laporan Stok Saat Ini</h2>
-        <button class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 
-                font-medium rounded-lg text-sm px-4 py-2 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none">
-            Export PDF
-        </button>
+
+    @php
+        use Illuminate\Support\Facades\DB;
+        $products = DB::table('products')
+            ->join('categories', 'products.category_id', '=', 'categories.id')
+            ->select('products.*', 'categories.name as kategori')
+            ->get();
+    @endphp
+
+    <!-- Laporan Stok Barang -->
+    <div
+        class="p-4 bg-white block sm:flex items-center justify-between border-b border-gray-200 lg:mt-1.5 dark:bg-gray-800 dark:border-gray-700">
+        <div class="w-full mb-1">
+            <div class="mb-4">
+                <h1 class="text-xl font-semibold text-gray-900 sm:text-2xl dark:text-white">Laporan Stok Barang</h1>
+            </div>
+        </div>
     </div>
 
-    <div class="relative overflow-x-auto shadow-md sm:rounded-lg">
-        <table class="w-full text-sm text-left text-gray-700 dark:text-gray-300">
-            <thead class="text-xs uppercase bg-gray-100 dark:bg-gray-700 dark:text-gray-300">
-                <tr>
-                    <th scope="col" class="px-6 py-3">No</th>
-                    <th scope="col" class="px-6 py-3">Kode Barang</th>
-                    <th scope="col" class="px-6 py-3">Nama Barang</th>
-                    <th scope="col" class="px-6 py-3">Stok Saat Ini</th>
-                    <th scope="col" class="px-6 py-3">Satuan</th>
-                    <th scope="col" class="px-6 py-3">Terakhir Diupdate</th>
-                </tr>
-            </thead>
-            <tbody>
-                {{-- Baris contoh, nanti tinggal looping pakai @foreach --}}
-                <tr class="bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600">
-                    <td class="px-6 py-4">1</td>
-                    <td class="px-6 py-4">BRG-001</td>
-                    <td class="px-6 py-4">Pulpen Hitam</td>
-                    <td class="px-6 py-4">150</td>
-                    <td class="px-6 py-4">pcs</td>
-                    <td class="px-6 py-4">07 Juli 2025</td>
-                </tr>
-                <tr class="bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600">
-                    <td class="px-6 py-4">2</td>
-                    <td class="px-6 py-4">BRG-002</td>
-                    <td class="px-6 py-4">Kertas A4</td>
-                    <td class="px-6 py-4">90</td>
-                    <td class="px-6 py-4">rim</td>
-                    <td class="px-6 py-4">06 Juli 2025</td>
-                </tr>
-                {{-- ... Tambah lagi jika perlu --}}
-            </tbody>
-        </table>
+    <div class="flex flex-col">
+        <div class="overflow-x-auto">
+            <div class="inline-block min-w-full align-middle">
+                <div class="overflow-hidden shadow">
+                    <table class="min-w-full divide-y divide-gray-200 table-fixed dark:divide-gray-600">
+                        <thead class="bg-gray-100 dark:bg-gray-700">
+                            <tr>
+                                <th class="p-4 text-xs font-bold text-left text-gray-500 uppercase dark:text-gray-400">Nama
+                                    Produk</th>
+                                <th class="p-4 text-xs font-bold text-left text-gray-500 uppercase dark:text-gray-400">
+                                    Kategori</th>
+                                <th class="p-4 text-xs font-bold text-left text-gray-500 uppercase dark:text-gray-400">Masuk
+                                </th>
+                                <th class="p-4 text-xs font-bold text-left text-gray-500 uppercase dark:text-gray-400">
+                                    Keluar</th>
+                                <th class="p-4 text-xs font-bold text-left text-gray-500 uppercase dark:text-gray-400">Sisa
+                                </th>
+                                <th class="p-4 text-xs font-bold text-left text-gray-500 uppercase dark:text-gray-400">Stok
+                                    Minimum</th>
+                                <th class="p-4 text-xs font-bold text-left text-gray-500 uppercase dark:text-gray-400">
+                                    Status</th>
+                            </tr>
+                        </thead>
+                        <tbody class="bg-white divide-y divide-gray-200 dark:bg-gray-800 dark:divide-gray-700">
+                            @foreach($products as $product)
+                                @php
+                                    $barangMasuk = $product->barang_masuk ?? 0;
+                                    $barangKeluar = $product->barang_keluar ?? 0;
+                                    $minimumStock = $product->minimum_stock ?? 0;
+                                    $sisaStok = $barangMasuk - $barangKeluar;
+
+                                    if ($sisaStok <= 0) {
+                                        $status = 'Habis';
+                                        $statusColor = 'text-red-500';
+                                    } elseif ($sisaStok <= $minimumStock + 10) {
+                                        $status = 'Hampir Habis';
+                                        $statusColor = 'text-yellow-500';
+                                    } else {
+                                        $status = 'Tersedia';
+                                        $statusColor = 'text-green-500';
+                                    }
+                                @endphp
+                                <tr class="hover:bg-gray-100 dark:hover:bg-gray-700">
+                                    <td class="p-4 text-sm text-gray-500 dark:text-gray-400">{{ $product->name }}</td>
+                                    <td class="p-4 text-sm text-gray-500 dark:text-gray-400">{{ $product->kategori }}</td>
+                                    <td class="p-4 text-sm text-gray-500 dark:text-gray-400">{{ $barangMasuk }}</td>
+                                    <td class="p-4 text-sm text-gray-500 dark:text-gray-400">{{ $barangKeluar }}</td>
+                                    <td class="p-4 text-sm text-gray-500 dark:text-gray-400">{{ $sisaStok }}</td>
+                                    <td class="p-4 text-sm text-gray-500 dark:text-gray-400">{{ $minimumStock }}</td>
+                                    <td class="p-4 text-sm font-semibold {{ $statusColor }}">{{ $status }}</td>
+                                </tr>
+                            @endforeach
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
     </div>
-</div>
+
+
+    <!-- Laporan Transaksi Barang -->
+    <div
+        class="p-4 bg-white block sm:flex items-center justify-between border-b border-gray-200 lg:mt-1.5 dark:bg-gray-800 dark:border-gray-700">
+        <div class="w-full mb-1">
+            <div class="mb-4">
+                <h1 class="text-xl font-semibold text-gray-900 sm:text-2xl dark:text-white">Laporan Transaksi Barang</h1>
+            </div>
+        </div>
+    </div>
+
+    <div class="flex flex-col">
+        <div class="overflow-x-auto">
+            <div class="inline-block min-w-full align-middle">
+                <div class="overflow-hidden shadow">
+                    <table class="min-w-full divide-y divide-gray-200 table-fixed dark:divide-gray-600">
+                        <thead class="bg-gray-100 dark:bg-gray-700">
+                            <tr>
+                                <th class="p-4 text-xs font-bold text-left text-gray-500 uppercase dark:text-gray-400">
+                                    Tanggal</th>
+                                <th class="p-4 text-xs font-bold text-left text-gray-500 uppercase dark:text-gray-400">
+                                    Produk</th>
+                                <th class="p-4 text-xs font-bold text-left text-gray-500 uppercase dark:text-gray-400">Masuk
+                                </th>
+                                <th class="p-4 text-xs font-bold text-left text-gray-500 uppercase dark:text-gray-400">
+                                    Keluar</th>
+                                <th class="p-4 text-xs font-bold text-left text-gray-500 uppercase dark:text-gray-400">
+                                    Kuantitas</th>
+                            </tr>
+                        </thead>
+                        <tbody class="bg-white divide-y divide-gray-200 dark:bg-gray-800 dark:divide-gray-700">
+                            @foreach($products as $product)
+                                <tr class="hover:bg-gray-100 dark:hover:bg-gray-700">
+                                    <td class="p-4 text-sm text-gray-500 dark:text-gray-400">{{ $product->tanggal ?? '-' }}</td>
+                                    <td class="p-4 text-sm text-gray-500 dark:text-gray-400">{{ $product->nama_produk ?? '-' }}
+                                    </td>
+                                    <td class="p-4 text-sm text-gray-500 dark:text-gray-400">{{ $product->barang_masuk ?? '_' }}
+                                    </td>
+                                    <td class="p-4 text-sm text-gray-500 dark:text-gray-400">
+                                        {{ $product->barang_keluar ?? '_' }}
+                                    </td>
+                                    <td class="p-4 text-sm text-gray-500 dark:text-gray-400">{{ $product->kuantitas ?? '_' }}
+                                    </td>
+                                </tr>
+                            @endforeach
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Riwayat Aktivitas -->
+    <div
+        class="p-4 bg-white block sm:flex items-center justify-between border-b border-gray-200 lg:mt-1.5 dark:bg-gray-800 dark:border-gray-700">
+        <div class="w-full mb-1">
+            <div class="mb-4">
+                <h1 class="text-xl font-semibold text-gray-900 sm:text-2xl dark:text-white">Riwayat Aktivitas</h1>
+            </div>
+        </div>
+    </div>
+
+    <div class="flex flex-col">
+        <div class="overflow-x-auto">
+            <div class="inline-block min-w-full align-middle">
+                <div class="overflow-hidden shadow">
+                    <table class="min-w-full divide-y divide-gray-200 table-fixed dark:divide-gray-600">
+                        <thead class="bg-gray-100 dark:bg-gray-700">
+                            <tr>
+                                <th class="p-4 text-xs font-bold text-left text-gray-500 uppercase dark:text-gray-400">User
+                                </th>
+                                <th class="p-4 text-xs font-bold text-left text-gray-500 uppercase dark:text-gray-400">Aksi
+                                </th>
+                                <th class="p-4 text-xs font-bold text-left text-gray-500 uppercase dark:text-gray-400">Waktu
+                                </th>
+                                <th class="p-4 text-xs font-bold text-left text-gray-500 uppercase dark:text-gray-400">
+                                    Detail</th>
+                            </tr>
+                        </thead>
+                        <tbody class="bg-white divide-y divide-gray-200 dark:bg-gray-800 dark:divide-gray-700">
+                            @foreach($products as $product)
+                                <tr class="hover:bg-gray-100 dark:hover:bg-gray-700">
+                                    <td class="p-4 text-sm text-gray-500 dark:text-gray-400">{{ $product->user ?? '-' }}</td>
+                                    <td class="p-4 text-sm text-gray-500 dark:text-gray-400">{{ $product->aksi ?? '-' }}</td>
+                                    <td class="p-4 text-sm text-gray-500 dark:text-gray-400">{{ $product->waktu ?? '-' }}</td>
+                                    <td class="p-4 text-sm text-gray-500 dark:text-gray-400">{{ $product->keterangan ?? '-' }}
+                                    </td>
+                                </tr>
+                            @endforeach
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+
 @endsection
