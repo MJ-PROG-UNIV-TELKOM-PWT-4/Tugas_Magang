@@ -123,9 +123,9 @@
                         </tr>  
                     </thead>  
                     <tbody id="category-body" class="bg-white divide-y divide-gray-200 dark:bg-gray-800 dark:divide-gray-700">  
-                        @foreach($categories as $index => $category)  <!-- Menambahkan $index di sini -->
+                        @foreach($categories as $index => $category)
                         <tr class="category-row hover:bg-gray-100 dark:hover:bg-gray-700">  
-                            <td class="p-4 text-sm font-normal text-gray-500 whitespace-nowrap dark:text-gray-400">{{ $index + 1 }}</td>  <!-- Menampilkan nomor urut -->
+                            <td class="p-4 text-sm font-normal text-gray-500 whitespace-nowrap dark:text-gray-400">{{ $index + 1 }}</td>
                             <td class="p-4 text-sm font-normal text-gray-500 whitespace-nowrap dark:text-gray-400">{{ $category->name }}</td>  
                             <td class="p-4 text-sm font-normal text-gray-500 whitespace-nowrap dark:text-gray-400">{{ $category->description }}</td>  
                             <td class="p-4 space-x-2 whitespace-nowrap">  
@@ -164,46 +164,35 @@
         </svg>  
         <span class="sr-only">Close menu</span>  
     </button>  
-    <form action="{{ route('products.store') }}" method="POST">  
-        @csrf  
-        <div class="space-y-4">  
-            <div>  
-                <label for="create-name" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Nama Produk</label>  
-                <input type="text" name="name" id="create-name" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500" placeholder="Type product name" required>  
-            </div>  
-            <div>  
-                <label for="create-category_id" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">ID Kategori</label>  
-                <input type="number" name="category_id" id="create-category_id" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500" placeholder="Category ID" required>  
-            </div>  
-            <div>  
-                <label for="create-supplier_id" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">ID Supplier</label>  
-                <input type="number" name="supplier_id" id="create-supplier_id" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500" placeholder="Supplier ID" required>  
-            </div>  
-            <div>  
-                <label for="create-description" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Attribut Produk</label>  
-                <textarea id="create-description" name="description" rows="4" class="block p-2.5 w-full text-sm text-gray-900 bg-gray-50 rounded-lg border border-gray-300 focus:ring-primary-500 focus:border-primary-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500" placeholder="Masukkan atribut produk seperti merek, model, ukuran, warna, berat bersih, dan tanggal kadaluarsa"></textarea>  
-            </div>  
-            <div>  
-                <label for="create-minimum_stock" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Stok Minimum</label>  
-                <input type="number" name="minimum_stock" id="create-minimum_stock" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500" placeholder="Minimum Stock" required>  
-            </div>  
-            <div>  
-                <label for="create-barang_masuk" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Barang Masuk</label>  
-                <input type="number" name="barang_masuk" id="create-barang_masuk" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500" placeholder="Jumlah barang masuk" required>  
-            </div>  
-            <div>  
-                <label for="create-tanggal_masuk" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Tanggal Masuk</label>  
-                <input type="date" name="tanggal_masuk" id="create-tanggal_masuk" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500" required>  
-            </div>  
-            <div>  
-                <label for="create-barang_keluar" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Barang Keluar</label>  
-                <input type="number" name="barang_keluar" id="create-barang_keluar" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500" placeholder="Jumlah barang keluar" required>  
-            </div>  
-            <div>  
-                <label for="create-tanggal_keluar" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Tanggal Keluar</label>  
-                <input type="date" name="tanggal_keluar" id="create-tanggal_keluar" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500">  
-            </div>  
+<form action="{{ route('products.store') }}" method="POST">  
+    @csrf  
+    <input type="hidden" name="status" value="Pending">
+    <div class="space-y-4">  
+        <div>  
+            <label for="create-name" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Nama Produk</label>  
+            <input type="text" name="name" id="create-name" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500" placeholder="Type product name" required>  
         </div>  
+        <div>  
+            <label for="create-category_id" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">ID Kategori</label>  
+            <input type="number" name="category_id" id="create-category_id" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500" placeholder="Category ID" required>  
+        </div>  
+        <div>  
+            <label for="create-supplier_id" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">ID Supplier</label>  
+            <input type="number" name="supplier_id" id="create-supplier_id" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500" placeholder="Supplier ID" required>  
+        </div>  
+        <div>  
+            <label for="create-description" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Attribut Produk</label>  
+            <textarea id="create-description" name="description" rows="4" class="block p-2.5 w-full text-sm text-gray-900 bg-gray-50 rounded-lg border border-gray-300 focus:ring-primary-500 focus:border-primary-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500" placeholder="Masukkan atribut produk seperti merek, model, ukuran, warna, berat bersih, dan tanggal kadaluarsa"></textarea>  
+        </div>
+        <div>  
+            <label for="create-barang_masuk" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Barang Masuk</label>  
+            <input type="number" name="barang_masuk" id="create-barang_masuk" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500" placeholder="Jumlah barang masuk" required>  
+        </div>  
+        <div>  
+            <label for="create-tanggal_masuk" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Tanggal Masuk</label>  
+            <input type="date" name="tanggal_masuk" id="create-tanggal_masuk" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500" required>  
+        </div>  
+    </div>  
         
         <!-- Button Section -->
         <div class="flex justify-center p-4 space-x-4">  
@@ -279,10 +268,6 @@
             <div>
                 <label for="update-description" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Attribut Produk</label>
                 <textarea id="update-description" name="description" rows="4" class="block p-2.5 w-full text-sm text-gray-900 bg-gray-50 rounded-lg border border-gray-300 focus:ring-primary-500 focus:border-primary-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500" placeholder="Enter product attributes"></textarea>
-            </div>
-            <div>
-                <label for="update-minimum_stock" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Stok Minimum</label>
-                <input type="number" name="minimum_stock" id="update-minimum_stock" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500" placeholder="Minimum Stock" required>
             </div>
         </div>
         <div class="absolute bottom-0 left-0 flex justify-center w-full p-4 space-x-4">
@@ -401,7 +386,7 @@ function toggleCategoryDrawer(type = null) {
 }
 
 // Fungsi untuk membuka drawer update produk
-function openUpdateProductDrawer(id, name, category_id, supplier_id, description, minimum_stock) {
+function openUpdateProductDrawer(id, name, category_id, supplier_id, description) {
     // Set action form update
     const form = document.getElementById('update-product-form');
     form.action = `/products/${id}`; // Pastikan route ini sesuai
@@ -411,7 +396,6 @@ function openUpdateProductDrawer(id, name, category_id, supplier_id, description
     document.getElementById('update-category_id').value = category_id;
     document.getElementById('update-supplier_id').value = supplier_id;
     document.getElementById('update-description').value = description;
-    document.getElementById('update-minimum_stock').value = minimum_stock;
 
     // Buka drawer update
     toggleProductDrawer('update');
