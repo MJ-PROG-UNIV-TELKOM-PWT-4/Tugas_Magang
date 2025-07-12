@@ -17,33 +17,31 @@ class StockController extends Controller
 
     public function updateStock(Request $request, $id)
     {
-        // Validasi input
-        $request->validate([
-            'quantity' => 'nullable|integer|min:0', // Modifier 'nullable' karena tidak semua status butuh quantity
-            'status' => 'required|in:Pending,Diterima,Ditolak,Dikeluarkan',
-            'date' => 'nullable|date', // Modifier 'nullable' karena tidak semua status butuh tanggal
-        ]);
+    // Validasi input
+    $request->validate([
+        'quantity' => 'nullable|integer|min:0', // Modifier 'nullable' karena tidak semua status butuh quantity
+        'status' => 'required|in:Pending,Diterima,Ditolak,Dikeluarkan',
+        'date' => 'nullable|date', // Modifier 'nullable' karena tidak semua status butuh tanggal
+    ]);
 
-        // Temukan produk berdasarkan ID
-        $product = Product::findOrFail($id);
+    // Temukan produk berdasarkan ID
+    $product = Product::findOrFail($id);
 
-        // Update status berdasarkan input
-        $product->status = $request->status; // Perbarui status
-        
-        // Hanya update barang_keluar dan tanggal_keluar jika status "Dikeluarkan"
-        if ($request->status === 'Dikeluarkan') {
-            $product->barang_keluar = $request->input('quantity', 0); // Menyimpan data keluar jika dikeluarkan
-            $product->tanggal_keluar = $request->input('date'); // Menyimpan tanggal keluar
-        } else {
-            // Jika status bukan "Dikeluarkan", reset keluar dan tanggal_keluar
-            $product->barang_keluar = 0;
-            $product->tanggal_keluar = null;
-        }
+    // Update status berdasarkan input
+    $product->status = $request->status; // Perbarui status
 
-        // Simpan perubahan
-        $product->save();
+    // Logika untuk barang_masuk
+    if ($request->status === 'Ditolak') {
+        $product->barang_masuk = 0; // Set barang_masuk menjadi 0 jika status "Ditolak"
+    } elseif ($request->status === 'Dikeluarkan') {
+        $product->barang_keluar = $request->input('quantity', 0); // Menyimpan data keluar jika dikeluarkan
+        $product->tanggal_keluar = $request->input('date'); // Menyimpan tanggal keluar
+    }
 
-        return redirect()->back()->with('success', 'Data berhasil diupdate.');  // Pastikan untuk mengalihkan dan memberi umpan balik
+    // Simpan perubahan
+    $product->save();
+
+    return redirect()->back()->with('success', 'Data berhasil diupdate.');  // Pastikan untuk mengalihkan dan memberi umpan balik
     }
 
     public function updateMinimumStock(Request $request, $id)
