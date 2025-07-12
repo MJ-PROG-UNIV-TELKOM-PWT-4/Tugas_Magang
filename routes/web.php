@@ -181,7 +181,7 @@ Route::delete('/users/{user}', [UserController::class, 'destroy'])->name('users.
 
 // Routing ke table Stok
 Route::get('/stock', [StockController::class, 'index'])->name('stock.index');
-Route::post('/stock/update/{productId}', [StockController::class, 'updateStockOut'])->name('stock.update');
+Route::post('/stock/update/{productId}', [StockController::class, 'updateStock'])->name('stock.update');
 Route::post('/stock/minimum/{productId}', [StockController::class, 'updateMinimumStock'])->name('stock.minimum');
 
 // Routing ke table Laporan
