@@ -9,6 +9,7 @@ use App\Http\Controllers\Auth\ProductController;
 use App\Http\Controllers\Auth\CategoriesController;
 use App\Http\Controllers\Auth\UserController;
 use App\Http\Controllers\Auth\StockController;
+use App\Http\Controllers\Auth\SupplierController;
 
 /*
 |--------------------------------------------------------------------------
