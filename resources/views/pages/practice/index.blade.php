@@ -18,14 +18,6 @@
         $sisaStok = $product->barang_masuk - $product->barang_keluar; // Menghitung sisa stok
         $stockData[$product->name] = $sisaStok; // Menyimpan nama produk dan sisa stok
     }
-
-    // Mengambil aktivitas pengguna terbaru
-    $recentActivities = DB::table('activity_logs')
-        ->join('users', 'activity_logs.user_id', '=', 'users.id')
-        ->select('activity_logs.*', 'users.name as user_name')
-        ->orderBy('activity_logs.created_at', 'desc')
-        ->limit(5)
-        ->get();
     
     // Data untuk grafik
     $chartLabels = array_keys($stockData);
@@ -112,8 +104,52 @@
     </div>
 </div>
 
-<!-- Aktivitas Pengguna Terbaru -->
- 
+<!-- Aktivitas Pengguna Hari Ini -->
+<div class="mt-6 bg-white dark:bg-gray-800 rounded-lg shadow-sm border border-gray-200 dark:border-gray-700">
+    <div class="p-4 flex items-center justify-between border-b border-gray-200 dark:border-gray-700">
+        <h2 class="text-lg font-semibold text-gray-900 dark:text-white">Riwayat Aktivitas Hari Ini</h2>
+    </div>
+
+    <div class="flex flex-col">
+        <div class="overflow-x-auto">
+            <div class="inline-block min-w-full align-middle">
+                <div class="overflow-hidden">
+                    <table class="min-w-full divide-y divide-gray-200 table-fixed dark:divide-gray-600">
+                        <thead class="bg-gray-100 dark:bg-gray-700">
+                            <tr>
+                                <th class="p-4 text-xs font-bold text-left text-gray-500 uppercase dark:text-gray-400">User</th>
+                                <th class="p-4 text-xs font-bold text-left text-gray-500 uppercase dark:text-gray-400">Aksi</th>
+                                <th class="p-4 text-xs font-bold text-left text-gray-500 uppercase dark:text-gray-400">Waktu</th>
+                                <th class="p-4 text-xs font-bold text-left text-gray-500 uppercase dark:text-gray-400">Detail</th>
+                            </tr>
+                        </thead>
+                        <tbody class="bg-white divide-y divide-gray-200 dark:bg-gray-800 dark:divide-gray-700">
+                            @forelse($aktivitasHariIni as $aktivitas)
+                                <tr class="hover:bg-gray-100 dark:hover:bg-gray-700">
+                                    <td class="p-4 text-sm text-gray-500 dark:text-gray-400">{{ $aktivitas->user->name ?? '-' }}</td>
+                                    <td class="p-4 text-sm text-gray-500 dark:text-gray-400">{{ ucfirst($aktivitas->action) }}</td>
+                                    <td class="p-4 text-sm text-gray-500 dark:text-gray-400">{{ \Carbon\Carbon::parse($aktivitas->created_at)->format('H:i') }}</td>
+                                    <td class="p-4 text-sm text-gray-500 dark:text-gray-400">
+                                        {{ $aktivitas->notes ?? "Tipe: $aktivitas->target_type, ID: $aktivitas->target_id" }}
+                                    </td>
+                                </tr>
+                            @empty
+                                <tr>
+                                    <td colspan="4" class="p-4 text-center text-sm text-gray-500 dark:text-gray-400">
+                                        Belum ada aktivitas hari ini.
+                                    </td>
+                                </tr>
+                            @endforelse
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
 
 <!-- Chart.js Script -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.9.1/chart.min.js"></script>

@@ -90,4 +90,40 @@ class LaporanController extends Controller
             'logBulan'
         ));
     }
+
+    public function dashboard()
+    {
+        // Data Ringkasan
+        $totalProducts = DB::table('products')->count();
+        $totalCategories = DB::table('categories')->count();
+        $totalSuppliers = DB::table('suppliers')->count();
+
+        // Data Grafik Stok Produk
+        $products = DB::table('products')->get();
+        $stockData = [];
+
+        foreach ($products as $product) {
+            $sisaStok = $product->barang_masuk - $product->barang_keluar;
+            $stockData[$product->name] = $sisaStok;
+        }
+
+        $chartLabels = array_keys($stockData);
+        $chartData = array_values($stockData);
+
+        // Aktivitas Hari Ini
+        $aktivitasHariIni = ActivityLog::with('user')
+            ->whereDate('created_at', Carbon::today())
+            ->latest()
+            ->get();
+
+        return view('pages.practice.index', compact(
+            'totalProducts',
+            'totalCategories',
+            'totalSuppliers',
+            'stockData',
+            'chartLabels',
+            'chartData',
+            'aktivitasHariIni'
+        ));
+    }
 }
