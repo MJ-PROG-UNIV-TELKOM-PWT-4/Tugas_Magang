@@ -152,6 +152,9 @@ Route::name('practice.')->group(function () {
     });
 });
 
+// Routing ke Dashboard
+Route::get('/dashboard', [LaporanController::class, 'dashboard'])->name('dashboard.index');
+
 // Routing ke table Produk
 Route::get('/products', [ProductController::class, 'index'])->name('products.index');
 Route::post('/products', [ProductController::class, 'store'])->name('products.store');
