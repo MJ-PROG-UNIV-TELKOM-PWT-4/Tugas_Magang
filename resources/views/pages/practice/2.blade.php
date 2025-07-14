@@ -242,7 +242,7 @@
     });
 
     function openMinimumStockDrawer(productId, minimumStock) {
-        document.getElementById('minimumStockForm').action = `/minimum-stock/update/${productId}`; // Sesuaikan route
+        document.getElementById('minimumStockForm').action = `/stock/minimum/${productId}`; // Sesuaikan route
         document.getElementById('minimum_product_id').value = productId;
         document.getElementById('minimum_stock').value = minimumStock; // Mengisi nilai stok minimum dari database
 
