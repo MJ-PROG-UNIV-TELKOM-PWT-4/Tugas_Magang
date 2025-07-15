@@ -125,7 +125,12 @@ Route::post('/logout', function () {
     return redirect('/login')->with('success', 'Berhasil logout!');
 })->name('logout');
 
-// Halaman Admin Dashboard
+// Halaman Manager Dashboard
+Route::get('/manager-dashboard', function () {
+    return view('pages.practice.ManagerGudangDashboard');
+})->name('dashboard');
+
+// Halaman Staff Dashboard
 Route::get('/staff-dashboard', function () {
     return view('pages.practice.StaffGudangDashboard');
 })->name('dashboard');
