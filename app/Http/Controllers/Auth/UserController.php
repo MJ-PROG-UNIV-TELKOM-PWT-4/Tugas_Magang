@@ -12,7 +12,7 @@ class UserController extends Controller
     public function index()
     {
         $users = User::all(); // Mengambil semua pengguna dari database
-        return view('pages.practice.4', compact('users')); // Pastikan nama view ini sesuai dengan file Blade Anda
+        return view('pages.practice.AdminPengguna', compact('users')); // Pastikan nama view ini sesuai dengan file Blade Anda
     }
 
     // Menyimpan data pengguna baru

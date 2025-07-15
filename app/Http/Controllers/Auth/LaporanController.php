@@ -75,7 +75,7 @@ class LaporanController extends Controller
             ->orderBy('created_at', 'desc')
             ->get();
 
-        return view('pages.practice.5', compact(
+        return view('pages.practice.AdminLaporan', compact(
             'laporan',
             'riwayatTransaksi',
             'riwayatUser',
@@ -116,7 +116,7 @@ class LaporanController extends Controller
             ->latest()
             ->get();
 
-        return view('pages.practice.index', compact(
+        return view('pages.practice.AdminDashboard', compact(
             'totalProducts',
             'totalCategories',
             'totalSuppliers',

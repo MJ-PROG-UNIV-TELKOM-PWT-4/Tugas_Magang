@@ -10,7 +10,7 @@ class SupplierController extends Controller
     public function index() // Menampilkan semua supplier
     {
         $suppliers = Supplier::all();
-        return view('pages.practice.3', compact('suppliers'));
+        return view('pages.practice.AdminSupplier', compact('suppliers'));
     }
 
     public function search(Request $request) // Menampilkan semua supplier
@@ -27,7 +27,7 @@ class SupplierController extends Controller
         $suppliers = Supplier::all();
     }
 
-    return view('pages.practice.3', compact('suppliers'));
+    return view('pages.practice.AdminSupplier', compact('suppliers'));
     }   
 
     public function store(Request $request) // Add Supplier
@@ -46,7 +46,7 @@ class SupplierController extends Controller
 
     public function show(Supplier $supplier) // Show Supplier
     {
-        return view('pages.practice.3', compact('suppliers')); // Update path view
+        return view('pages.practice.AdminSupplier', compact('suppliers')); // Update path view
     }
 
     public function update(Request $request, Supplier $supplier) // Update Supplier
