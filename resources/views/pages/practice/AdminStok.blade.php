@@ -216,9 +216,9 @@
 
 <script>
     function openStockUpdateDrawer(productId) {
-        document.getElementById('stockForm').action = /stock/update/${productId}; // Atur action form
+        document.getElementById('stockForm').action = `/stock/update/${productId}`;
         document.getElementById('product_id').value = productId;
-        toggleKeluarForm(); // Init toggle visibility
+        toggleKeluarForm();
         document.getElementById('drawer-update-stock-default').classList.remove('translate-x-full');
         document.getElementById('stockOverlay').classList.remove('hidden');
     }
@@ -259,10 +259,9 @@
     });
 
     function openMinimumStockDrawer(productId, minimumStock) {
-        document.getElementById('minimumStockForm').action = /stock/minimum/${productId}; // Sesuaikan route
+        document.getElementById('minimumStockForm').action = `/stock/minimum/${productId}`;
         document.getElementById('minimum_product_id').value = productId;
-        document.getElementById('minimum_stock').value = minimumStock; // Mengisi nilai stok minimum dari database
-
+        document.getElementById('minimum_stock').value = minimumStock;
         document.getElementById('drawer-update-minimum-stock').classList.remove('translate-x-full');
         document.getElementById('minimumStockOverlay').classList.remove('hidden');
     }
