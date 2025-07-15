@@ -189,3 +189,5 @@ Route::post('/stock/minimum/{productId}', [StockController::class, 'updateMinimu
 
 // Routing ke table Laporan
 Route::get('/laporan', [LaporanController::class, 'index'])->name('laporan.index');
+Route::post('/stock/minimum/{id}', [ProductController::class, 'updateMinimumStock'])->name('products.minimumStock');
+
