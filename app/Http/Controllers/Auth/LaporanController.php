@@ -75,6 +75,11 @@ class LaporanController extends Controller
             ->orderBy('created_at', 'desc')
             ->get();
 
+        // Generate minggu per bulan untuk dropdown filter
+        $stokWeeks = $this->generateWeeks($stokBulan);
+        $transWeeks = $this->generateWeeks($transBulan);
+        $logWeeks = $this->generateWeeks($logBulan);
+
         return view('pages.practice.AdminLaporan', compact(
             'laporan',
             'riwayatTransaksi',
@@ -87,7 +92,10 @@ class LaporanController extends Controller
             'logEnd',
             'stokBulan',
             'transBulan',
-            'logBulan'
+            'logBulan',
+            'stokWeeks',
+            'transWeeks',
+            'logWeeks'
         ));
     }
 
@@ -116,6 +124,13 @@ class LaporanController extends Controller
             ->latest()
             ->get();
 
+        // Aktivitas User (khusus 'user')
+        $aktivitasUser = ActivityLog::with(['user', 'targetUser'])
+            ->where('target_type', 'user')
+            ->latest()
+            ->take(10)
+            ->get();
+
         return view('pages.practice.AdminDashboard', compact(
             'totalProducts',
             'totalCategories',
@@ -123,7 +138,38 @@ class LaporanController extends Controller
             'stockData',
             'chartLabels',
             'chartData',
-            'aktivitasHariIni'
+            'aktivitasHariIni',
+            'aktivitasUser'
         ));
     }
+
+    // Fungsi generate daftar minggu berdasarkan bulan
+    private function generateWeeks($bulan, $tahun = null)
+{
+    $tahun = $tahun ?? now()->year;
+    $weeks = [];
+
+    // Konversi $bulan ke integer kalau string
+    $bulan = (int) $bulan;
+
+    $startOfMonth = Carbon::create($tahun, $bulan, 1)->startOfMonth();
+    $endOfMonth = Carbon::create($tahun, $bulan, 1)->endOfMonth();
+    $current = $startOfMonth->copy()->startOfWeek(Carbon::MONDAY);
+
+    while ($current <= $endOfMonth) {
+        $start = $current->copy();
+        $end = $current->copy()->endOfWeek();
+
+        $weeks[] = [
+            'label' => 'Minggu ' . $start->format('d M') . ' - ' . $end->format('d M'),
+            'start' => $start->toDateString(),
+            'end' => $end->toDateString(),
+        ];
+
+        $current->addWeek();
+    }
+
+    return $weeks;
+}
+
 }

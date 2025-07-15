@@ -20,6 +20,11 @@ class ActivityLog extends Model
     // Optional relasi
     public function user()
     {
-        return $this->belongsTo(User::class);
+        return $this->belongsTo(User::class, 'user_id');
+    }
+
+        public function targetUser()
+    {
+        return $this->belongsTo(User::class, 'target_id');
     }
 }

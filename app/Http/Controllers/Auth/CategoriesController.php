@@ -11,7 +11,7 @@ class CategoriesController extends Controller
     public function index()
     {
         $categories = Categories::all(); // Mengambil semua data kategori
-        return view('pages.practice.AdminProduk', compact('categories')); // Mengembalikan tampilan dengan data kategori
+        return view('pages.practice.AdminProduk', compact('categories')); // (Kalau view-nya memang di AdminProduk)
     }
 
     public function store(Request $request)
@@ -21,7 +21,11 @@ class CategoriesController extends Controller
             'description' => 'nullable|string',
         ]);
 
-        Categories::create($request->all()); // Menyimpan data kategori baru
+        $category = Categories::create($request->all());
+
+        // Logging aktivitas
+        logActivity('create', 'category', $category->id, 'Menambahkan kategori: ' . $category->name);
+
         return redirect()->route('categories.index')->with('success', 'Category created successfully.');
     }
 
@@ -39,14 +43,23 @@ class CategoriesController extends Controller
         ]);
 
         $category = Categories::findOrFail($id);
-        $category->update($request->all()); // Memperbarui kategori
+        $category->update($request->all());
+
+        // Logging aktivitas
+        logActivity('update', 'category', $category->id, 'Memperbarui kategori: ' . $category->name);
+
         return redirect()->route('categories.index')->with('success', 'Category updated successfully.');
     }
 
     public function destroy($id)
     {
         $category = Categories::findOrFail($id);
-        $category->delete(); // Menghapus kategori
+
+        // Logging sebelum dihapus
+        logActivity('delete', 'category', $category->id, 'Menghapus kategori: ' . $category->name);
+
+        $category->delete();
+
         return redirect()->route('categories.index')->with('success', 'Category deleted successfully.');
     }
 }

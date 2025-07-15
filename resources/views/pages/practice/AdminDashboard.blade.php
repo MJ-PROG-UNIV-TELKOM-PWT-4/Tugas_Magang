@@ -126,7 +126,7 @@
         </div>
     </div>
 
-    <!-- Aktivitas Pengguna Hari Ini -->
+    <!-- Riwayat Aktivitas Pengguna Hari Ini -->
     <div class="mt-6 bg-white dark:bg-gray-800 rounded-lg shadow-sm border border-gray-200 dark:border-gray-700">
         <div class="p-4 flex items-center justify-between border-b border-gray-200 dark:border-gray-700">
             <h2 class="text-lg font-semibold text-gray-900 dark:text-white">Riwayat Aktivitas Hari Ini</h2>
@@ -153,11 +153,15 @@
                                 @forelse($aktivitasHariIni as $aktivitas)
                                     <tr class="hover:bg-gray-100 dark:hover:bg-gray-700">
                                         <td class="p-4 text-sm text-gray-500 dark:text-gray-400">
-                                            {{ $aktivitas->user->name ?? '-' }}</td>
+                                            {{ $aktivitas->user->name ?? '-' }}
+                                        </td>
                                         <td class="p-4 text-sm text-gray-500 dark:text-gray-400">
-                                            {{ ucfirst($aktivitas->action) }}</td>
+                                            {{ ucfirst($aktivitas->action) }}
+                                        </td>
                                         <td class="p-4 text-sm text-gray-500 dark:text-gray-400">
-                                            {{ \Carbon\Carbon::parse($aktivitas->created_at)->format('H:i') }}</td>
+                                            {{ \Carbon\Carbon::parse($aktivitas->created_at)->format('H:i') }}
+                                            ({{ \Carbon\Carbon::parse($aktivitas->created_at)->diffForHumans() }})
+                                        </td>
                                         <td class="p-4 text-sm text-gray-500 dark:text-gray-400">
                                             {{ $aktivitas->notes ?? "Tipe: $aktivitas->target_type, ID: $aktivitas->target_id" }}
                                         </td>

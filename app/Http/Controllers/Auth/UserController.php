@@ -8,63 +8,68 @@ use App\Http\Controllers\Controller;
 
 class UserController extends Controller
 {
-    // Menampilkan semua pengguna
     public function index()
     {
-        $users = User::all(); // Mengambil semua pengguna dari database
-        return view('pages.practice.AdminPengguna', compact('users')); // Pastikan nama view ini sesuai dengan file Blade Anda
+        $users = User::all();
+        return view('pages.practice.AdminPengguna', compact('users'));
     }
 
-    // Menyimpan data pengguna baru
     public function store(Request $request)
     {
-    $request->validate([
-        'name' => 'required',
-        'email' => 'required|email|unique:users,email', // Memastikan email unik
-        'password' => 'required', // Pastikan password diisi
-        'role' => 'required|in:Admin,Staff Gudang,Manajer Gudang' // Memastikan role valid sesuai ENUM di database
-    ]);
+        $request->validate([
+            'name' => 'required',
+            'email' => 'required|email|unique:users,email',
+            'password' => 'required',
+            'role' => 'required|in:Admin,Staff Gudang,Manajer Gudang'
+        ]);
 
-    // Simpan pengguna dengan password dalam plaintext
-    User::create([
-        'name' => $request->name,
-        'email' => $request->email,
-        'password' => $request->password, // Simpan password dalam plaintext (tidak dianjurkan)
-        'role' => $request->role, // Simpan sesuai tipe ENUM
-    ]);
+        $user = User::create([
+            'name' => $request->name,
+            'email' => $request->email,
+            'password' => bcrypt($request->password),
+            'role' => $request->role,
+        ]);
 
-    return redirect()->route('users.index')->with('success', 'User created successfully.');
+        // Log aktivitas
+        logActivity('create', 'user', $user->id, 'Menambahkan pengguna: ' . $user->name);
+
+        return redirect()->route('users.index')->with('success', 'User created successfully.');
     }
 
-    // Mengupdate data pengguna
     public function update(Request $request, User $user)
     {
-    $request->validate([
-        'name' => 'required',
-        'email' => 'required|email',
-        'password' => 'nullable', // Password diizinkan untuk tidak diisi
-        'role' => 'required|in:Admin,Staff Gudang,Manajer Gudang', // Memastikan role valid
-    ]);
+        $request->validate([
+            'name' => 'required',
+            'email' => 'required|email',
+            'password' => 'nullable',
+            'role' => 'required|in:Admin,Staff Gudang,Manajer Gudang',
+        ]);
 
-    // Update data pengguna
-    $user->name = $request->name;
-    $user->email = $request->email;
+        $user->name = $request->name;
+        $user->email = $request->email;
+        $user->password = bcrypt($request->password);
 
-    // Hanya update password jika ada yang dimasukkan
-    if ($request->filled('password')) {
-        $user->password = $request->password; // Simpan password dalam plaintext
+
+        if ($request->filled('password')) {
+            $user->password = $request->password;
+        }
+
+        $user->role = $request->role;
+        $user->save();
+
+        // Log aktivitas
+        logActivity('update', 'user', $user->id, 'Memperbarui pengguna: ' . $user->name);
+
+        return redirect()->route('users.index')->with('success', 'User updated successfully.');
     }
 
-    $user->role = $request->role; // Simpan role sesuai ENUM 
-    $user->save(); // Simpan perubahan ke database
-
-    return redirect()->route('users.index')->with('success', 'User updated successfully.'); // Redirect kembali ke daftar pengguna
-    }
-
-    // Menghapus pengguna
     public function destroy(User $user)
     {
+        // Log dulu sebelum dihapus
+        logActivity('delete', 'user', $user->id, 'Menghapus pengguna: ' . $user->name);
+
         $user->delete();
+
         return redirect()->route('users.index')->with('success', 'User deleted successfully.');
     }
 }

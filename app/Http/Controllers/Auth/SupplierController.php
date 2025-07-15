@@ -15,22 +15,22 @@ class SupplierController extends Controller
 
     public function search(Request $request) // Menampilkan semua supplier
     {
-    // Ambil query pencarian dari input
-    $search = $request->input('search');
+        // Ambil query pencarian dari input
+        $search = $request->input('search');
 
-    // Jika ada pencarian, gunakan untuk memfilter supplier
-    if ($search) {
-        $suppliers = Supplier::where('name', 'like', "%{$search}%")
-            ->orWhere('id', 'like', "%{$search}%")
-            ->get();
-    } else {
-        $suppliers = Supplier::all();
+        // Jika ada pencarian, gunakan untuk memfilter supplier
+        if ($search) {
+            $suppliers = Supplier::where('name', 'like', "%{$search}%")
+                ->orWhere('id', 'like', "%{$search}%")
+                ->get();
+        } else {
+            $suppliers = Supplier::all();
+        }
+
+        return view('pages.practice.AdminSupplier', compact('suppliers'));
     }
 
-    return view('pages.practice.AdminSupplier', compact('suppliers'));
-    }   
-
-    public function store(Request $request) // Add Supplier
+    public function store(Request $request)
     {
         $request->validate([
             'name' => 'required|string|max:50',
@@ -39,17 +39,14 @@ class SupplierController extends Controller
             'email' => 'required|email|min:0',
         ]);
 
-        Supplier::create($request->all());
+        $supplier = Supplier::create($request->all());
+
+        logActivity('create', 'supplier', $supplier->id, 'Menambahkan supplier: ' . $supplier->name);
 
         return redirect()->route('suppliers.index')->with('success', 'Supplier created successfully.');
     }
 
-    public function show(Supplier $supplier) // Show Supplier
-    {
-        return view('pages.practice.AdminSupplier', compact('suppliers')); // Update path view
-    }
-
-    public function update(Request $request, Supplier $supplier) // Update Supplier
+    public function update(Request $request, Supplier $supplier)
     {
         $request->validate([
             'name' => 'required|string|max:50',
@@ -60,13 +57,28 @@ class SupplierController extends Controller
 
         $supplier->update($request->all());
 
+        logActivity('update', 'supplier', $supplier->id, 'Memperbarui supplier: ' . $supplier->name);
+
+
         return redirect()->route('suppliers.index')->with('success', 'Supplier updated successfully.');
     }
 
-    public function destroy(Supplier $supplier) // Delete Supplier
+
+    public function show(Supplier $supplier) // Show Supplier
+    {
+        return view('pages.practice.AdminSupplier', compact('suppliers')); // Update path view
+    }
+
+    public function destroy(Supplier $supplier)
     {
         try {
+            $supplierName = $supplier->name;
+            $supplierId = $supplier->id;
             $supplier->delete();
+
+            logActivity('delete', 'supplier', $supplier->id, 'Menghapus supplier: ' . $supplier->name);
+
+
             return redirect()->route('suppliers.index')->with('success', 'Supplier deleted successfully.');
         } catch (\Exception $e) {
             return redirect()->route('suppliers.index')->with('error', 'Failed to delete Supplier: ' . $e->getMessage());
