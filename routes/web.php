@@ -125,30 +125,10 @@ Route::post('/logout', function () {
     return redirect('/login')->with('success', 'Berhasil logout!');
 })->name('logout');
 
-// Halaman Manager Gudang Produk
-Route::get('/managergudangproduk', function () {
-    return view('pages.practice.ManagerGudangProduk');
-})->name('Produk');
-
-// Halaman Manager Gudang Stok
-Route::get('/managergudangstok', function () {
-    return view('pages.practice.ManagerGudangStok');
-})->name('Stok');
-
-// Halaman Manager Gudang Supplier
-Route::get('/managergudangsupplier', function () {
-    return view('pages.practice.ManagerGudangSupplier');
-})->name('Supplier');
-
-// Halaman Manager Gudang Laporan
-Route::get('/managergudanglaporan', function () {
-    return view('pages.practice.ManagerGudangLaporan');
-})->name('Laporan');
-
-// Halaman Staff Gudang Stok
-Route::get('/staffgudangstok', function () {
-    return view('pages.practice.StaffGudangStok');
-})->name('Stok');
+// Halaman Admin Dashboard
+Route::get('/staff-dashboard', function () {
+    return view('pages.practice.StaffGudangDashboard');
+})->name('dashboard');
 
 // Halaman Admin Dashboard
 Route::get('/dashboard', function () {
@@ -195,8 +175,8 @@ Route::name('practice.')->group(function () {
 
 // Routing ke halaman-halaman praktik Staff Gudang
 Route::name('practice.')->group(function () {
-    Route::name('eleventh')->get('staff-produk', function () {
-        return view('pages.practice.ManagerGudangProduk');
+    Route::name('eleventh')->get('staff-stok', function () {
+        return view('pages.practice.StaffGudangStok');
     });
 });
 
@@ -236,6 +216,6 @@ Route::post('/stock/update/{productId}', [StockController::class, 'updateStock']
 Route::post('/stock/minimum/{productId}', [StockController::class, 'updateMinimumStock'])->name('stock.minimum');
 
 // Routing ke Admin table Laporan
-Route::get('/laporan', [LaporanController::class, 'index'])->name('laporan.index');
+Route::get('/admin-laporan', [LaporanController::class, 'index'])->name('laporan.index');
 Route::post('/stock/minimum/{id}', [ProductController::class, 'updateMinimumStock'])->name('products.minimumStock');
 
