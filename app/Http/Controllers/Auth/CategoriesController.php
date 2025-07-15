@@ -11,7 +11,7 @@ class CategoriesController extends Controller
     public function index()
     {
         $categories = Categories::all(); // Mengambil semua data kategori
-        return view('pages.practice.1', compact('categories')); // Mengembalikan tampilan dengan data kategori
+        return view('pages.practice.AdminProduk', compact('categories')); // Mengembalikan tampilan dengan data kategori
     }
 
     public function store(Request $request)

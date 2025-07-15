@@ -11,7 +11,7 @@ class ProductController extends Controller
     public function index()
     {
         $products = Product::all();
-        return view('pages.practice.1', compact('products'));
+        return view('pages.practice.AdminProduk', compact('products'));
     }
 
     public function search(Request $request)
@@ -27,7 +27,7 @@ class ProductController extends Controller
             $products = Product::all();
         }
 
-        return view('pages.practice.1', compact('products'));
+        return view('pages.practice.AdminProduk', compact('products'));
     }
 
     public function store(Request $request)
