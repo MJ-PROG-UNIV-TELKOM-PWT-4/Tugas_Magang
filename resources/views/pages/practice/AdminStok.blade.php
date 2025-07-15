@@ -1,4 +1,3 @@
-2.blade.php
 @extends('layouts.dashboard')
 
 @section('content')
