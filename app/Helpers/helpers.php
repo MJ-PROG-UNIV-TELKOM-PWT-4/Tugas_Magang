@@ -1,6 +1,7 @@
 <?php
 
 use App\Models\ActivityLog;
+use Carbon\Carbon;
 
 function logActivity($action, $targetType, $targetId = null, $notes = null)
 {
@@ -10,6 +11,6 @@ function logActivity($action, $targetType, $targetId = null, $notes = null)
         'target_type' => $targetType,
         'target_id' => $targetId,
         'notes' => $notes,
-        'created_at' => now(),
+        'created_at' => Carbon::now('Asia/Jakarta')->toDateTimeString(),
     ]);
 }

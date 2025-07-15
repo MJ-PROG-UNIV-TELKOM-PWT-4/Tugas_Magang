@@ -44,18 +44,20 @@ class StockController extends Controller
     return redirect()->back()->with('success', 'Data berhasil diupdate.');  // Pastikan untuk mengalihkan dan memberi umpan balik
     }
 
-    public function updateMinimumStock(Request $request, $id)
-    {
-        // Validasi input
-        $request->validate([
-            'minimum_stock' => 'required|integer|min:0',
-        ]);
+public function updateMinimumStock(Request $request, $id)
+{
+    $request->validate([
+        'minimum_stock' => 'required|integer|min:0',
+    ]);
 
-        // Update minimum stock
-        $product = Product::findOrFail($id);
-        $product->minimum_stock = $request->minimum_stock;
-        $product->save();
+    $product = Product::findOrFail($id);
+    $old = $product->minimum_stock;
+    $product->minimum_stock = $request->minimum_stock;
+    $product->save();
 
-        return redirect()->back()->with('success', 'Stok minimum berhasil diperbarui.');
-    }
+    // ✅ Catat ke log activity di sini
+    logActivity('update', 'minimum_stock', $product->id, 'Mengubah stok minimum produk: ' . $product->name . ' dari ' . $old . ' ke ' . $request->minimum_stock);
+
+    return redirect()->back()->with('success', 'Stok minimum berhasil diperbarui.');
+}
 }
