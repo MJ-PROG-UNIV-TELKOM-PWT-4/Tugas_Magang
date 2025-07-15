@@ -69,7 +69,6 @@ class ProductController extends Controller
             'supplier_id' => 'required|integer',
             'name' => 'required|string|max:255',
             'description' => 'nullable|string',
-            'minimum_stock' => 'required|integer|min:0',
         ]);
 
         $product->update($request->all());
