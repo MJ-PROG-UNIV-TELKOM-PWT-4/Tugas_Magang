@@ -1,3 +1,4 @@
+2.blade.php
 @extends('layouts.dashboard')
 
 @section('content')
@@ -64,9 +65,29 @@
 </div>
 
 <!-- Tabel Stok Minimum -->
-<div class="p-4 bg-white dark:bg-gray-800 border-t border-gray-200 dark:border-gray-700 mt-1.5">
-    <h1 class="text-xl font-semibold text-gray-900 sm:text-2xl dark:text-white">Manage Stok Minimum</h1>
+<div class="p-4 bg-white block sm:flex items-center justify-between border-b border-gray-200 lg:mt-1.5 dark:bg-gray-800 dark:border-gray-700">
+    <div class="w-full mb-1">
+        <div class="mb-4">
+            <h1 class="text-xl font-semibold text-gray-900 sm:text-2xl dark:text-white">Manage Stok Minimum</h1>
+        </div>
+        <div class="items-center justify-between block sm:flex md:divide-x md:divide-gray-100 dark:divide-gray-700">
+            <div class="flex items-center mb-4 sm:mb-0">
+                <form class="sm:pr-3 w-full" action="#" method="GET">
+                    <label for="stock-minimum-search" class="sr-only">Search</label>
+                    <div class="relative w-full sm:w-64 xl:w-96">
+                        <input type="text" id="stock-minimum-search" oninput="filterMinimumStock()" 
+                            class="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg 
+                                   focus:ring-primary-500 focus:border-primary-500 block w-full p-2.5 
+                                   dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white 
+                                   dark:focus:ring-primary-500 dark:focus:border-primary-500"
+                            placeholder="Search for products">
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
 </div>
+
 
 <div class="flex flex-col">
     <div class="overflow-x-auto">
@@ -81,7 +102,7 @@
                             <th class="p-4 text-xs font-bold text-left text-gray-500 uppercase dark:text-gray-400">Action</th>
                         </tr>
                     </thead>
-                    <tbody class="bg-white divide-y dark:bg-gray-800 dark:divide-gray-700">
+<tbody id="minimumStockTableBody" class="bg-white divide-y dark:bg-gray-800 dark:divide-gray-700">
                         @foreach($products as $product)
                             <tr>
                                 <td class="p-4 text-sm text-gray-500 dark:text-gray-400">{{ $loop->iteration }}</td>
@@ -196,7 +217,7 @@
 
 <script>
     function openStockUpdateDrawer(productId) {
-        document.getElementById('stockForm').action = `/stock/update/${productId}`; // Atur action form
+        document.getElementById('stockForm').action = /stock/update/${productId}; // Atur action form
         document.getElementById('product_id').value = productId;
         toggleKeluarForm(); // Init toggle visibility
         document.getElementById('drawer-update-stock-default').classList.remove('translate-x-full');
@@ -239,7 +260,7 @@
     });
 
     function openMinimumStockDrawer(productId, minimumStock) {
-        document.getElementById('minimumStockForm').action = `/stock/minimum/${productId}`; // Sesuaikan route
+        document.getElementById('minimumStockForm').action = /stock/minimum/${productId}; // Sesuaikan route
         document.getElementById('minimum_product_id').value = productId;
         document.getElementById('minimum_stock').value = minimumStock; // Mengisi nilai stok minimum dari database
 
@@ -251,6 +272,19 @@
         document.getElementById('drawer-update-minimum-stock').classList.add('translate-x-full');
         document.getElementById('minimumStockOverlay').classList.add('hidden');
     }
+
+    function filterMinimumStock() {
+    const input = document.getElementById('stock-minimum-search');
+    const filter = input.value.toLowerCase();
+    const tableBody = document.getElementById('minimumStockTableBody');
+    const rows = tableBody.getElementsByTagName('tr');
+
+    Array.from(rows).forEach(row => {
+        const productName = row.cells[1]?.textContent.toLowerCase() || '';
+        row.style.display = productName.includes(filter) ? '' : 'none';
+    });
+}
+
 </script>
 
 @endsection
