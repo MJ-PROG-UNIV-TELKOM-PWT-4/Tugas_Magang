@@ -21,12 +21,22 @@ class SignInController extends Controller
         $user = DB::table('users')->where('email', $request->email)->first();
 
         // Verifikasi jika pengguna ada dan passwordnya cocok
-        if ($user && $user->password === $request->password) { 
+        if ($user && $user->password === $request->password) {
             // Jika password cocok dengan plaintext
             Auth::loginUsingId($user->id); // Login pengguna menggunakan ID
             $request->session()->regenerate(); // Regenerate session 
 
-            return redirect()->intended('/admin-dashboard'); // Arahkan ke dashboard atau halaman lainnya
+            // Arahkan sesuai role
+           switch (strtolower($user->role)) {
+    case 'admin':
+        return redirect('/admin-dashboard');
+    case 'manager gudang':
+        return redirect('/manager-dashboard');
+    case 'staff gudang':
+        return redirect('/staff-dashboard');
+    default:
+        return redirect('/'); // fallback
+            }
         }
 
         // Jika login gagal

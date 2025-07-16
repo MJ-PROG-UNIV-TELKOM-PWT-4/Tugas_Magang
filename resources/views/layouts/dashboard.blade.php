@@ -1,104 +1,96 @@
 <!DOCTYPE html>
 <html lang="en" class="dark">
 <head>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <meta name="description" content="#">
-    <meta name="author" content="#">
-    <meta name="generator" content="Laravel">
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>{{ $title ?? 'Dashboard' }} — Stockify</title>
 
-    <title>Stockify</title>
-    @vite(['resources/css/app.css','resources/js/app.js'])
-    <link rel="canonical" href="{{ request()->fullUrl() }}">
+  @vite(['resources/css/app.css', 'resources/js/app.js'])
 
-    @if(isset($page->params['robots']))
-        <meta name="robots" content="{{ $page->params['robots'] }}">
+  <link rel="canonical" href="{{ request()->fullUrl() }}">
+  <link rel="icon" type="image/png" href="/favicon.ico">
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+
+  <script>
+    if (
+      localStorage.getItem('color-theme') === 'dark' ||
+      (!('color-theme' in localStorage) && window.matchMedia('(prefers-color-scheme: dark)').matches)
+    ) {
+      document.documentElement.classList.add('dark');
+    } else {
+      document.documentElement.classList.remove('dark');
+    }
+  </script>
+</head>
+
+<body class="bg-gray-50 dark:bg-gray-900">
+  @php
+    $rawRole = Auth::check() ? Auth::user()->role : null;
+    $role = match (strtolower($rawRole)) {
+        'admin' => 'admin',
+        'manager gudang' => 'managergudang',
+        'staff gudang' => 'staffgudang',
+        default => null
+    };
+  @endphp
+
+  <div class="flex pt-16 overflow-hidden">
+    {{-- Sidebar komponen berdasarkan role --}}
+    @if ($role === 'admin')
+      <x-sidebar.admin-sidebar />
+    @elseif ($role === 'managergudang')
+      <x-sidebar.managergudang-sidebar />
+    @elseif ($role === 'staffgudang')
+      <x-sidebar.staffgudang-sidebar />
     @endif
 
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
-    <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
-    <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
-    <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
-    <link rel="icon" type="image/png" href="/favicon.ico">
-    <link rel="manifest" href="/site.webmanifest">
-    <link rel="mask-icon" href="/safari-pinned-tab.svg" color="#5bbad5">
-    <meta name="msapplication-TileColor" content="#ffffff">
-    <meta name="theme-color" content="#ffffff">
-    <!-- Twitter -->
-    <meta name="twitter:card" content="summary_large_image">
-    <meta name="twitter:site" content="@">
-    <meta name="twitter:creator" content="@">
-    <meta name="twitter:title" content="title">
-    <meta name="twitter:description" content="description">
-    <meta name="twitter:image" content="#">
-    <!-- Facebook -->
-    <meta property="og:url" content="#">
-    <meta property="og:title" content="title">
-    <meta property="og:description" content="description">
-    <meta property="og:type" content="website">
-    <meta property="og:image" content="#">
-    <meta property="og:image:type" content="image/png">
-
-    <script>
-        // On page load or when changing themes, best to add inline in `head` to avoid FOUC
-        if (localStorage.getItem('color-theme') === 'dark' || (!('color-theme' in localStorage) && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
-            document.documentElement.classList.add('dark');
-        } else {
-            document.documentElement.classList.remove('dark')
-        }
-    </script>
-</head>
-@php
-    $whiteBg = isset($params['white_bg']) && $params['white_bg'];
-@endphp
-<body class="{{ $whiteBg ? 'bg-white dark:bg-gray-900' : 'bg-gray-50 dark:bg-gray-800' }}">
-    <x-navbar-dashboard/>
-    <div class="flex pt-16 overflow-hidden bg-gray-50 dark:bg-gray-900">
-        <x-sidebar.admin-sidebar/>
-        <div id="main-content" class="relative w-full h-full overflow-y-auto bg-gray-50 lg:ml-64 dark:bg-gray-900">
-            <main>
-                @yield('content')
-            </main>
-            <x-footer-dashboard/>
-        </div>
+    {{-- Main content --}}
+    <div id="main-content" class="relative w-full h-full overflow-y-auto lg:ml-64">
+      <main class="p-4 sm:p-6 md:p-8">
+        @yield('content')
+      </main>
     </div>
-    <script async defer src="https://buttons.github.io/buttons.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/flowbite/1.6.2/datepicker.min.js"></script>
-</body>
-</html>
+  </div>
 
-<script>
-  function getLocalizedTime(offsetHours) {
-    const now = new Date();
-    const utc = now.getTime() + (now.getTimezoneOffset() * 60000);
-    return new Date(utc + (offsetHours * 3600000));
-  }
-
-  function updateClock() {
-    const settings = JSON.parse(localStorage.getItem('appSettings')) || {};
-    const format = settings.timeFormat || '24';
-    let time;
-
-    switch (format) {
-      case 'wita':
-        time = getLocalizedTime(8).toLocaleTimeString('id-ID', { hour12: false }) + ' WITA';
-        break;
-      case 'wit':
-        time = getLocalizedTime(9).toLocaleTimeString('id-ID', { hour12: false }) + ' WIT';
-        break;
-      case 'wib':
-        time = getLocalizedTime(7).toLocaleTimeString('id-ID', { hour12: false }) + ' WIB';
-        break;
-      default:
-        time = getLocalizedTime(7).toLocaleTimeString('id-ID', { hour12: false });
+  {{-- Clock Script --}}
+  <script>
+    function getLocalizedTime(offsetHours) {
+      const now = new Date();
+      const utc = now.getTime() + now.getTimezoneOffset() * 60000;
+      return new Date(utc + offsetHours * 3600000);
     }
 
-    const clock = document.getElementById('clock-time');
-    if (clock) clock.textContent = time;
-  }
+    function updateClock() {
+      const settings = JSON.parse(localStorage.getItem('appSettings')) || {};
+      const format = settings.timeFormat || '24';
+      let time;
 
-  setInterval(updateClock, 1000);
-  updateClock();
-</script>
+      switch (format) {
+        case 'wita':
+          time = getLocalizedTime(8).toLocaleTimeString('id-ID', { hour12: false }) + ' WITA';
+          break;
+        case 'wit':
+          time = getLocalizedTime(9).toLocaleTimeString('id-ID', { hour12: false }) + ' WIT';
+          break;
+        case 'wib':
+          time = getLocalizedTime(7).toLocaleTimeString('id-ID', { hour12: false }) + ' WIB';
+          break;
+        default:
+          time = getLocalizedTime(7).toLocaleTimeString('id-ID', { hour12: false });
+      }
+
+      const clock = document.getElementById('clock-time');
+      if (clock) clock.textContent = time;
+    }
+
+    setInterval(updateClock, 1000);
+    updateClock();
+  </script>
+
+  <script async defer src="https://buttons.github.io/buttons.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/flowbite/1.6.2/datepicker.min.js"></script>
+</body>
+</html>
