@@ -128,17 +128,17 @@ Route::post('/logout', function () {
 // Halaman Manager Dashboard
 Route::get('/manager-dashboard', function () {
     return view('pages.practice.ManagerGudangDashboard');
-})->name('dashboard');
+})->name('dashboard.manager');
 
 // Halaman Staff Dashboard
 Route::get('/staff-dashboard', function () {
     return view('pages.practice.StaffGudangDashboard');
-})->name('dashboard');
+})->name('dashboard.staff');
 
 // Halaman Admin Dashboard
 Route::get('/admin-dashboard', function () {
     return view('pages.practice.AdminDashboard');
-})->name('dashboard');
+})->name('dashboard.admin');
 
 // Routing ke halaman-halaman praktik Admin
 Route::name('practice.')->group(function () {
@@ -172,9 +172,6 @@ Route::name('practice.')->group(function () {
     });
     Route::name('ninth')->get('manager-supplier', function () {
         return view('pages.practice.ManagerGudangSupplier');
-    });
-    Route::name('tenth')->get('manager-laporan', function () {
-        return view('pages.practice.ManagerGudangLaporan');
     });
 });
 
