@@ -26,7 +26,7 @@ class SignInController extends Controller
             Auth::loginUsingId($user->id); // Login pengguna menggunakan ID
             $request->session()->regenerate(); // Regenerate session 
 
-            return redirect()->intended('/dashboard'); // Arahkan ke dashboard atau halaman lainnya
+            return redirect()->intended('/admin-dashboard'); // Arahkan ke dashboard atau halaman lainnya
         }
 
         // Jika login gagal

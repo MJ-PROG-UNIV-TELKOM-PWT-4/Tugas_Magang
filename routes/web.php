@@ -136,7 +136,7 @@ Route::get('/staff-dashboard', function () {
 })->name('dashboard');
 
 // Halaman Admin Dashboard
-Route::get('/dashboard', function () {
+Route::get('/admin-dashboard', function () {
     return view('pages.practice.AdminDashboard');
 })->name('dashboard');
 
@@ -186,7 +186,7 @@ Route::name('practice.')->group(function () {
 });
 
 // Routing ke Admin Dashboard
-Route::get('/dashboard', [LaporanController::class, 'dashboard'])->name('dashboard.index');
+Route::get('/admin-dashboard', [LaporanController::class, 'dashboard'])->name('dashboard.index');
 
 // Routing ke Admin table Produk
 Route::get('/products', [ProductController::class, 'index'])->name('products.index');
@@ -222,5 +222,5 @@ Route::post('/stock/minimum/{productId}', [StockController::class, 'updateMinimu
 
 // Routing ke Admin table Laporan
 Route::get('/admin-laporan', [LaporanController::class, 'index'])->name('laporan.index');
+Route::get('/manager-laporan', [LaporanController::class, 'managerGudangLaporan'])->name('manager.laporan');
 Route::post('/stock/minimum/{id}', [ProductController::class, 'updateMinimumStock'])->name('products.minimumStock');
-
