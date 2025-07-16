@@ -2,10 +2,10 @@
 
 @section('content')
 <div class="flex flex-col items-center justify-center px-6 pt-8 mx-auto md:h-screen pt:mt-0 dark:bg-gray-900">
-    <a href="{{ url('/') }}" class="flex items-center justify-center mb-8 text-2xl font-semibold lg:mb-10 dark:text-white">
-        <img src="https://cdn-icons-png.flaticon.com/128/3638/3638928.png" class="h-8 mr-3" alt="Logo" />
-        <span>Stockify</span>
-    </a>
+    <a href="{{ url('/') }}" class="flex ml-2 md:mr-24">
+            <img id="login-logo" src="..." class="h-10 sm:h-12 md:h-14 w-auto mr-3" alt="Logo Aplikasi" /> 
+            <span id="login-app-name" class="self-center text-xl font-semibold sm:text-2xl whitespace-nowrap dark:text-white">Stockify</span>
+          </a>
 
     <div class="w-full max-w-xl p-6 space-y-8 sm:p-8 bg-white rounded-lg shadow dark:bg-gray-800">
         <h2 class="text-2xl font-bold text-gray-900 dark:text-white">Create a Free Account</h2>
@@ -131,5 +131,81 @@
         eyeIcon.classList.toggle('hidden', !isHidden);
         eyeSlashIcon.classList.toggle('hidden', isHidden);
     });
+</script>
+
+<script>
+  // Ambil data dari localStorage
+  const settings = JSON.parse(localStorage.getItem('appSettings'));
+
+  if (settings && settings.appLogo && document.getElementById('login-logo')) {
+    document.getElementById('login-logo').src = settings.appLogo;
+  }
+</script>
+
+<script>
+  const appSettings = JSON.parse(localStorage.getItem('appSettings'));
+
+  if (appSettings) {
+    // Update logo
+    if (appSettings.appLogo && document.getElementById('login-logo')) {
+      document.getElementById('login-logo').src = appSettings.appLogo;
+    }
+
+    // Update app name
+    if (appSettings.appName && document.getElementById('login-app-name')) {
+      document.getElementById('login-app-name').textContent = appSettings.appName;
+    }
+  }
+</script>
+
+<script>
+  document.addEventListener('DOMContentLoaded', function () {
+    const settings = JSON.parse(localStorage.getItem('appSettings')) || {};
+    
+    const navbarLogo = document.getElementById('login-logo');
+    const navbarAppName = document.getElementById('login-app-name');
+
+    if (settings.appLogo && navbarLogo) {
+      navbarLogo.src = settings.appLogo;
+    }
+
+    if (settings.appName && navbarAppName) {
+      navbarAppName.textContent = settings.appName;
+    }
+  });
+</script>
+
+<script>
+  function getLocalizedTime(offsetHours) {
+    const now = new Date();
+    const utc = now.getTime() + (now.getTimezoneOffset() * 60000);
+    return new Date(utc + (offsetHours * 3600000));
+  }
+
+  function updateClock() {
+    const settings = JSON.parse(localStorage.getItem('appSettings')) || {};
+    const format = settings.timeFormat || '24';
+    let time;
+
+    switch (format) {
+      case 'wita':
+        time = getLocalizedTime(8).toLocaleTimeString('id-ID', { hour12: false }) + ' WITA';
+        break;
+      case 'wit':
+        time = getLocalizedTime(9).toLocaleTimeString('id-ID', { hour12: false }) + ' WIT';
+        break;
+      case 'wib':
+        time = getLocalizedTime(7).toLocaleTimeString('id-ID', { hour12: false }) + ' WIB';
+        break;
+      default:
+        time = getLocalizedTime(7).toLocaleTimeString('id-ID', { hour12: false });
+    }
+
+    const clock = document.getElementById('clock-time');
+    if (clock) clock.textContent = time;
+  }
+
+  setInterval(updateClock, 1000);
+  updateClock();
 </script>
 @endsection

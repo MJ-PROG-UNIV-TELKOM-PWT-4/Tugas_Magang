@@ -68,3 +68,37 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/flowbite/1.6.2/datepicker.min.js"></script>
 </body>
 </html>
+
+<script>
+  function getLocalizedTime(offsetHours) {
+    const now = new Date();
+    const utc = now.getTime() + (now.getTimezoneOffset() * 60000);
+    return new Date(utc + (offsetHours * 3600000));
+  }
+
+  function updateClock() {
+    const settings = JSON.parse(localStorage.getItem('appSettings')) || {};
+    const format = settings.timeFormat || '24';
+    let time;
+
+    switch (format) {
+      case 'wita':
+        time = getLocalizedTime(8).toLocaleTimeString('id-ID', { hour12: false }) + ' WITA';
+        break;
+      case 'wit':
+        time = getLocalizedTime(9).toLocaleTimeString('id-ID', { hour12: false }) + ' WIT';
+        break;
+      case 'wib':
+        time = getLocalizedTime(7).toLocaleTimeString('id-ID', { hour12: false }) + ' WIB';
+        break;
+      default:
+        time = getLocalizedTime(7).toLocaleTimeString('id-ID', { hour12: false });
+    }
+
+    const clock = document.getElementById('clock-time');
+    if (clock) clock.textContent = time;
+  }
+
+  setInterval(updateClock, 1000);
+  updateClock();
+</script>
