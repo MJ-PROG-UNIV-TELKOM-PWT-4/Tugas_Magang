@@ -29,7 +29,17 @@
         </a>
     </div>
 </footer>
-<p class="my-10 text-sm text-center text-gray-500">
-    &copy; 2025 <a href="{{ config('app.homepage') }}" class="hover:underline" target="_blank">Stockify</a>. All rights reserved.
-</p>
+<span class="block text-center text-gray-600 dark:text-gray-400"> © 2025 <span id="footer-app-name" class="font-semibold">Stockify</span>. All Rights Reserved.
+</span>
+
+<script>
+  document.addEventListener('DOMContentLoaded', function () {
+    const settings = JSON.parse(localStorage.getItem('appSettings')) || {};
+
+    const nameEls = document.querySelectorAll('#footer-app-name');
+    nameEls.forEach(el => {
+      if (settings.appName) el.textContent = settings.appName;
+    });
+  });
+</script>
   

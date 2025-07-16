@@ -1,11 +1,10 @@
 @extends('example.layouts.default.main')
 @section('content')
     <div class="flex flex-col items-center justify-center px-6 pt-8 mx-auto md:h-screen pt:mt-0 dark:bg-gray-900">
-        <a href="{{ url('/')}}"
-            class="flex items-center justify-center mb-8 text-2xl font-semibold lg:mb-10 dark:text-white">
-            <img src="https://cdn-icons-png.flaticon.com/128/3638/3638928.png" class="h-8 mr-3" alt="FlowBite Logo" />
-            <span>Stockify</span>
-        </a>
+        <a href="{{ url('/') }}" class="flex ml-2 md:mr-24">
+            <img id="login-logo" src="..." class="h-10 sm:h-12 md:h-14 w-auto mr-3" alt="Logo Aplikasi" /> 
+            <span id="login-app-name" class="self-center text-xl font-semibold sm:text-2xl whitespace-nowrap dark:text-white">Stockify</span>
+          </a>
         <!-- Card -->
         <div class="w-full bg-white rounded-lg shadow md:mt-0 sm:max-w-md xl:p-0 dark:bg-gray-800">
             <div class="w-full p-6 sm:p-8">
@@ -49,4 +48,46 @@
             </div>
         </div>
     </div>
+
+    <script>
+  // Ambil data dari localStorage
+  const settings = JSON.parse(localStorage.getItem('appSettings'));
+
+  if (settings && settings.appLogo && document.getElementById('login-logo')) {
+    document.getElementById('login-logo').src = settings.appLogo;
+  }
+</script>
+
+<script>
+  const appSettings = JSON.parse(localStorage.getItem('appSettings'));
+
+  if (appSettings) {
+    // Update logo
+    if (appSettings.appLogo && document.getElementById('login-logo')) {
+      document.getElementById('login-logo').src = appSettings.appLogo;
+    }
+
+    // Update app name
+    if (appSettings.appName && document.getElementById('login-app-name')) {
+      document.getElementById('login-app-name').textContent = appSettings.appName;
+    }
+  }
+</script>
+
+<script>
+  document.addEventListener('DOMContentLoaded', function () {
+    const settings = JSON.parse(localStorage.getItem('appSettings')) || {};
+    
+    const navbarLogo = document.getElementById('login-logo');
+    const navbarAppName = document.getElementById('login-app-name');
+
+    if (settings.appLogo && navbarLogo) {
+      navbarLogo.src = settings.appLogo;
+    }
+
+    if (settings.appName && navbarAppName) {
+      navbarAppName.textContent = settings.appName;
+    }
+  });
+</script>
 @endsection

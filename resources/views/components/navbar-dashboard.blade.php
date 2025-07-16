@@ -7,7 +7,7 @@
             <svg id="toggleSidebarMobileClose" class="hidden w-6 h-6" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z" clip-rule="evenodd"></path></svg>
           </button>
           <a href="{{ url('/') }}" class="flex ml-2 md:mr-24">
-            <img id="navbar-logo" src="https://cdn-icons-png.flaticon.com/128/3638/3638928.png" class="h-8 mr-3" alt="FlowBite Logo" />
+            <img id="navbar-logo" src="..." class="h-10 sm:h-12 md:h-14 w-auto mr-3" alt="Logo Aplikasi" /> 
             <span id="navbar-app-name" class="self-center text-xl font-semibold sm:text-2xl whitespace-nowrap dark:text-white">Stockify</span>
           </a>
         </div>
@@ -143,20 +143,53 @@
   }
 </script>
 
+<script>
+  document.addEventListener('DOMContentLoaded', function () {
+    const settings = JSON.parse(localStorage.getItem('appSettings')) || {};
+    
+    const navbarLogo = document.getElementById('navbar-logo');
+    const navbarAppName = document.getElementById('navbar-app-name');
 
-  <script>
-  function updateClockWIB() {
+    if (settings.appLogo && navbarLogo) {
+      navbarLogo.src = settings.appLogo;
+    }
+
+    if (settings.appName && navbarAppName) {
+      navbarAppName.textContent = settings.appName;
+    }
+  });
+</script>
+
+<script>
+  function getLocalizedTime(offsetHours) {
     const now = new Date();
     const utc = now.getTime() + (now.getTimezoneOffset() * 60000);
-    const wibTime = new Date(utc + (3600000 * 7));
-
-    const hours = String(wibTime.getHours()).padStart(2, '0');
-    const minutes = String(wibTime.getMinutes()).padStart(2, '0');
-    const seconds = String(wibTime.getSeconds()).padStart(2, '0');
-
-    document.getElementById('clock-time').textContent = `${hours}:${minutes}:${seconds} WIB`;
+    return new Date(utc + (offsetHours * 3600000));
   }
 
-  setInterval(updateClockWIB, 1000);
-  updateClockWIB();
+  function updateClock() {
+    const settings = JSON.parse(localStorage.getItem('appSettings')) || {};
+    const format = settings.timeFormat || '24';
+    let time;
+
+    switch (format) {
+      case 'wita':
+        time = getLocalizedTime(8).toLocaleTimeString('id-ID', { hour12: false }) + ' WITA';
+        break;
+      case 'wit':
+        time = getLocalizedTime(9).toLocaleTimeString('id-ID', { hour12: false }) + ' WIT';
+        break;
+      case 'wib':
+        time = getLocalizedTime(7).toLocaleTimeString('id-ID', { hour12: false }) + ' WIB';
+        break;
+      default:
+        time = getLocalizedTime(7).toLocaleTimeString('id-ID', { hour12: false });
+    }
+
+    const clock = document.getElementById('clock-time');
+    if (clock) clock.textContent = time;
+  }
+
+  setInterval(updateClock, 1000);
+  updateClock();
 </script>
