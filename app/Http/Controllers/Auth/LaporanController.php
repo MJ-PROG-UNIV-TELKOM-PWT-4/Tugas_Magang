@@ -80,7 +80,16 @@ class LaporanController extends Controller
         $transWeeks = $this->generateWeeks($transBulan);
         $logWeeks = $this->generateWeeks($logBulan);
 
-        return view('pages.practice.AdminLaporan', compact(
+        // Determine view based on user role or request parameter
+        $viewType = $request->input('view', 'admin'); // default to admin
+        
+        $viewName = match($viewType) {
+            'manager' => 'pages.practice.ManagerGudangLaporan',
+            'admin' => 'pages.practice.AdminLaporan',
+            default => 'pages.practice.AdminLaporan'
+        };
+
+        return view($viewName, compact(
             'laporan',
             'riwayatTransaksi',
             'riwayatUser',
@@ -97,6 +106,20 @@ class LaporanController extends Controller
             'transWeeks',
             'logWeeks'
         ));
+    }
+
+    // Method khusus untuk Admin
+    public function adminLaporan(Request $request)
+    {
+        $request->merge(['view' => 'admin']);
+        return $this->index($request);
+    }
+
+    // Method khusus untuk Manager Gudang
+    public function managerGudangLaporan(Request $request)
+    {
+        $request->merge(['view' => 'manager']);
+        return $this->index($request);
     }
 
     public function dashboard()
@@ -145,31 +168,30 @@ class LaporanController extends Controller
 
     // Fungsi generate daftar minggu berdasarkan bulan
     private function generateWeeks($bulan, $tahun = null)
-{
-    $tahun = $tahun ?? now()->year;
-    $weeks = [];
+    {
+        $tahun = $tahun ?? now()->year;
+        $weeks = [];
 
-    // Konversi $bulan ke integer kalau string
-    $bulan = (int) $bulan;
+        // Konversi $bulan ke integer kalau string
+        $bulan = (int) $bulan;
 
-    $startOfMonth = Carbon::create($tahun, $bulan, 1)->startOfMonth();
-    $endOfMonth = Carbon::create($tahun, $bulan, 1)->endOfMonth();
-    $current = $startOfMonth->copy()->startOfWeek(Carbon::MONDAY);
+        $startOfMonth = Carbon::create($tahun, $bulan, 1)->startOfMonth();
+        $endOfMonth = Carbon::create($tahun, $bulan, 1)->endOfMonth();
+        $current = $startOfMonth->copy()->startOfWeek(Carbon::MONDAY);
 
-    while ($current <= $endOfMonth) {
-        $start = $current->copy();
-        $end = $current->copy()->endOfWeek();
+        while ($current <= $endOfMonth) {
+            $start = $current->copy();
+            $end = $current->copy()->endOfWeek();
 
-        $weeks[] = [
-            'label' => 'Minggu ' . $start->format('d M') . ' - ' . $end->format('d M'),
-            'start' => $start->toDateString(),
-            'end' => $end->toDateString(),
-        ];
+            $weeks[] = [
+                'label' => 'Minggu ' . $start->format('d M') . ' - ' . $end->format('d M'),
+                'start' => $start->toDateString(),
+                'end' => $end->toDateString(),
+            ];
 
-        $current->addWeek();
+            $current->addWeek();
+        }
+
+        return $weeks;
     }
-
-    return $weeks;
-}
-
 }
