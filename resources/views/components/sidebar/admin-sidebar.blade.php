@@ -1,5 +1,5 @@
 <x-sidebar-dashboard>
-    <x-sidebar-menu-Admindashboard routeName="index.practice" title="Dashboard"/>
+    <x-sidebar-menu-Admindashboard routeName="admin.dashboard" title="Dashboard"/>
     <x-sidebar-menu-Adminproduk routeName="practice.first" title="Produk"/>
     <x-sidebar-menu-Adminstok routeName="practice.second" title="Stok"/>
     <x-sidebar-menu-Adminsupplier routeName="practice.third" title="Supplier"/>

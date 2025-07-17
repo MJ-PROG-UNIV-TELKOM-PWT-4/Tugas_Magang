@@ -5,7 +5,7 @@
 @php
     use Illuminate\Support\Facades\DB;
 
-    $products = DB::table('products')->paginate(10);
+    $products = DB::table('products')->get();
     $transactions = DB::table('stock_transactions')->get()->groupBy('product_id');
 @endphp
 
