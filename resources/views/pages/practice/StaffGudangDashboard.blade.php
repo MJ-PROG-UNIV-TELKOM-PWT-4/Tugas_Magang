@@ -14,8 +14,7 @@
 
 <!-- Header -->
 <div class="p-6 bg-white dark:bg-gray-800 border-b border-gray-200 dark:border-gray-700 mb-6">
-    <h1 class="text-2xl font-semibold text-gray-900 dark:text-white">Dashboard Staff Gudang</h1>
-    <p class="text-sm text-gray-600 dark:text-gray-300 mt-1">Lihat aktivitas gudang terkini dan tugas harian Anda.</p>
+    <h1 class="text-2xl font-semibold text-gray-900 dark:text-white">Dashboard</h1>
 </div>
 
 <!-- Summary Cards -->

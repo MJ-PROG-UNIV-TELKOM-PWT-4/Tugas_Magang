@@ -13,17 +13,26 @@
         // Mengambil semua produk untuk menghitung sisa stok
         $products = DB::table('products')->get();
         $stockData = [];
+        $produkStokHabis = 0; // Inisialisasi counter untuk produk tidak tersedia
 
         foreach ($products as $product) {
             $sisaStok = $product->barang_masuk - $product->barang_keluar; // Menghitung sisa stok
             $stockData[$product->name] = $sisaStok; // Menyimpan nama produk dan sisa stok
+            
+            // Menghitung produk yang sisa stoknya 0 atau kurang
+            if ($sisaStok <= 0) {
+                $produkStokHabis++;
+            }
         }
 
         // Data untuk grafik
         $chartLabels = array_keys($stockData);
         $chartData = array_values($stockData);
 
-        $produkStokHabis = $products->where('barang_masuk', '<=', DB::raw('barang_keluar'))->count();
+        // Alternatif query untuk menghitung produk stok habis (jika diperlukan)
+        // $produkStokHabisQuery = DB::table('products')
+        //     ->whereRaw('barang_masuk - barang_keluar <= 0')
+        //     ->count();
 
         $kategoriTerbanyak = DB::table('products')
             ->select('categories.name', DB::raw('COUNT(*) as jumlah'))
