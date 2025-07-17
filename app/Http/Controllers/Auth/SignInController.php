@@ -19,7 +19,6 @@ class SignInController extends Controller
 
         // Temukan pengguna berdasarkan email
         $user = DB::table('users')->where('email', $request->email)->first();
-
         if ($user && $user->password === $request->password) {
             Auth::loginUsingId($user->id);
             $request->session()->regenerate();

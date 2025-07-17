@@ -21,12 +21,19 @@
                     </div>  
                 </form>  
             </div>  
-            <button id="createProductButton" class="text-white bg-primary-700 hover:bg-primary-800 focus:ring-4 focus:ring-primary-300 font-medium rounded-lg text-sm px-5 py-2.5 dark:bg-primary-600 dark:hover:bg-primary-700 focus:outline-none dark:focus:ring-primary-800" type="button" onclick="toggleProductDrawer('create')">  
-                Tambahkan Produk Baru  
-            </button>  
+            
+            <div class="flex items-center space-x-3">
+                <a href="{{ route('products.export.pdf') }}" class="inline-flex items-center justify-center w-1/2 px-3 py-2 text-sm font-medium text-center text-gray-900 bg-white border border-gray-300 rounded-lg hover:bg-gray-100 focus:ring-4 focus:ring-primary-300 sm:w-auto dark:bg-gray-800 dark:text-gray-400 dark:border-gray-600 dark:hover:text-white dark:hover:bg-gray-700 dark:focus:ring-gray-700">
+                    <svg class="w-5 h-5 mr-2 -ml-1" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M6 2a2 2 0 00-2 2v12a2 2 0 002 2h8a2 2 0 002-2V7.414A2 2 0 0015.414 6L12 2.586A2 2 0 0010.586 2H6zm5 6a1 1 0 10-2 0v3.586l-1.293-1.293a1 1 0 10-1.414 1.414l3 3a1 1 0 001.414 0l3-3a1 1 0 00-1.414-1.414L11 11.586V8z" clip-rule="evenodd"></path></svg>
+                    Export
+                </a>
+                <button id="createProductButton" class="text-white bg-primary-700 hover:bg-primary-800 focus:ring-4 focus:ring-primary-300 font-medium rounded-lg text-sm px-5 py-2.5 dark:bg-primary-600 dark:hover:bg-primary-700 focus:outline-none dark:focus:ring-primary-800" type="button" onclick="toggleProductDrawer('create')">  
+                    Tambahkan Produk Baru  
+                </button>
+            </div>
         </div>  
     </div>  
-</div>  
+</div>
 
 <div class="flex flex-col">  
     <div class="overflow-x-auto">  
@@ -473,6 +480,30 @@ document.getElementById('createProductButton').addEventListener('click', functio
     document.getElementById('create-supplier_id').value = '';
     document.getElementById('create-description').value = '';
     document.getElementById('create-minimum_stock').value = '';
+});
+
+document.addEventListener('DOMContentLoaded', function() {
+    const exportButton = document.querySelector('a[href*="export-pdf"]');
+    
+    if (exportButton) {
+        exportButton.addEventListener('click', function(e) {
+            const originalText = this.innerHTML;
+            this.innerHTML = `
+                <svg class="animate-spin w-4 h-4 mr-2" fill="none" viewBox="0 0 24 24">
+                    <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+                    <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+                </svg>
+                Generating PDF...
+            `;
+            this.classList.add('pointer-events-none');
+            
+            // Reset button setelah 3 detik
+            setTimeout(() => {
+                this.innerHTML = originalText;
+                this.classList.remove('pointer-events-none');
+            }, 3000);
+        });
+    }
 });
 </script>
 
