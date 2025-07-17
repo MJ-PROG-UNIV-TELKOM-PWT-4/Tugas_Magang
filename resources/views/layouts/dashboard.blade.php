@@ -51,10 +51,10 @@
                 @case('Admin')
                     <x-sidebar.admin-sidebar />
                     @break
-                @case('Manager Gudang')
+                @case('Manajer Gudang')
                     <x-sidebar.managergudang-sidebar />
                     @break
-                @case('Staf Gudang')
+                @case('Staff Gudang')
                     <x-sidebar.staffgudang-sidebar />
                     @break
             @endswitch
@@ -105,5 +105,3 @@
         setInterval(updateClock, 1000);
         updateClock();
     </script>
-</body>
-</html>
