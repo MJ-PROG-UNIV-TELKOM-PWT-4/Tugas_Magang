@@ -125,23 +125,23 @@ Route::post('/logout', function () {
     return redirect('/login')->with('success', 'Berhasil logout!');
 })->name('logout');
 
-// Halaman Manager Dashboard
+// Halaman Manager Dashboard (khusus Manajer Gudang)
 Route::get('/manager-dashboard', function () {
     return view('pages.practice.ManagerGudangDashboard');
-})->name('dashboard.manager');
+})->name('dashboard.manager')->middleware('role:Manajer Gudang');
 
-// Halaman Staff Dashboard
+// Halaman Staff Dashboard (khusus Staff Gudang)
 Route::get('/staff-dashboard', function () {
     return view('pages.practice.StaffGudangDashboard');
-})->name('dashboard.staff');
+})->name('dashboard.staff')->middleware('role:Staff Gudang');
 
-// Halaman Admin Dashboard
+// Halaman Admin Dashboard (khusus Admin)
 Route::get('/admin-dashboard', function () {
     return view('pages.practice.AdminDashboard');
-})->name('dashboard.admin');
+})->name('dashboard.admin')->middleware('role:Admin');
 
-// Routing ke halaman-halaman praktik Admin
-Route::name('practice.')->group(function () {
+// Routing ke halaman-halaman praktik Admin (khusus Admin)
+Route::name('practice.')->middleware('role:Admin')->group(function () {
     Route::name('first')->get('admin-produk', function () {
         return view('pages.practice.AdminProduk');
     });
@@ -162,8 +162,8 @@ Route::name('practice.')->group(function () {
     });
 });
 
-// Routing ke halaman-halaman praktik Manager Gudang
-Route::name('practice.')->group(function () {
+// Routing ke halaman-halaman praktik Manajer Gudang (khusus Manajer Gudang)
+Route::name('practice.')->middleware('role:Manajer Gudang')->group(function () {
     Route::name('seventh')->get('manager-produk', function () {
         return view('pages.practice.ManagerGudangProduk');
     });
@@ -175,49 +175,55 @@ Route::name('practice.')->group(function () {
     });
 });
 
-// Routing ke halaman-halaman praktik Staff Gudang
-Route::name('practice.')->group(function () {
+// Routing ke halaman-halaman praktik Staff Gudang (khusus Staff Gudang)
+Route::name('practice.')->middleware('role:Staff Gudang')->group(function () {
     Route::name('eleventh')->get('staff-stok', function () {
         return view('pages.practice.StaffGudangStok');
     });
 });
 
-// Routing ke Admin Dashboard
-Route::get('/admin-dashboard', [LaporanController::class, 'dashboard'])->name('dashboard.index');
+// Routing ke Admin Dashboard (Controller) (khusus Admin)
+Route::get('/admin-dashboard', [LaporanController::class, 'dashboard'])->name('dashboard.index')->middleware('role:Admin');
 
-// Routing ke Admin table Produk
-Route::get('/products', [ProductController::class, 'index'])->name('products.index');
-Route::post('/products', [ProductController::class, 'store'])->name('products.store');
-Route::get('/products/{product}', [ProductController::class, 'show'])->name('products.show');
-Route::put('/products/{product}', [ProductController::class, 'update'])->name('products.update');
-Route::delete('/products/{product}', [ProductController::class, 'destroy'])->name('products.destroy');
+// Routing ke Admin table Produk (khusus Admin)
+Route::middleware('role:Admin')->group(function () {
+    Route::get('/products', [ProductController::class, 'index'])->name('products.index');
+    Route::post('/products', [ProductController::class, 'store'])->name('products.store');
+    Route::get('/products/{product}', [ProductController::class, 'show'])->name('products.show');
+    Route::put('/products/{product}', [ProductController::class, 'update'])->name('products.update');
+    Route::delete('/products/{product}', [ProductController::class, 'destroy'])->name('products.destroy');
 
-// Routing ke Admin table Kategori
-Route::get('/categories', [CategoriesController::class, 'index'])->name('categories.index');
-Route::post('/categories', [CategoriesController::class, 'store'])->name('categories.store');
-Route::get('/categories/{category}', [CategoriesController::class, 'show'])->name('categories.show');
-Route::put('/categories/{category}', [CategoriesController::class, 'update'])->name('categories.update');
-Route::delete('/categories/{category}', [CategoriesController::class, 'destroy'])->name('categories.destroy');
+    // Routing ke Admin table Kategori
+    Route::get('/categories', [CategoriesController::class, 'index'])->name('categories.index');
+    Route::post('/categories', [CategoriesController::class, 'store'])->name('categories.store');
+    Route::get('/categories/{category}', [CategoriesController::class, 'show'])->name('categories.show');
+    Route::put('/categories/{category}', [CategoriesController::class, 'update'])->name('categories.update');
+    Route::delete('/categories/{category}', [CategoriesController::class, 'destroy'])->name('categories.destroy');
 
-// Routing ke Admin table Supplier
-Route::get('/suppliers', [SupplierController::class, 'index'])->name('suppliers.index');
-Route::post('/suppliers', [SupplierController::class, 'store'])->name('suppliers.store');
-Route::get('/suppliers/{supplier}', [SupplierController::class, 'show'])->name('suppliers.show');
-Route::put('/suppliers/{supplier}', [SupplierController::class, 'update'])->name('suppliers.update');
-Route::delete('/suppliers/{supplier}', [SupplierController::class, 'destroy'])->name('suppliers.destroy');
+    // Routing ke Admin table Supplier
+    Route::get('/suppliers', [SupplierController::class, 'index'])->name('suppliers.index');
+    Route::post('/suppliers', [SupplierController::class, 'store'])->name('suppliers.store');
+    Route::get('/suppliers/{supplier}', [SupplierController::class, 'show'])->name('suppliers.show');
+    Route::put('/suppliers/{supplier}', [SupplierController::class, 'update'])->name('suppliers.update');
+    Route::delete('/suppliers/{supplier}', [SupplierController::class, 'destroy'])->name('suppliers.destroy');
 
-// Routing ke Admin table Pengguna
-Route::get('/users', [UserController::class, 'index'])->name('users.index');
-Route::post('/users', [UserController::class, 'store'])->name('users.store');
-Route::put('/users/{user}', [UserController::class, 'update'])->name('users.update');
-Route::delete('/users/{user}', [UserController::class, 'destroy'])->name('users.destroy');
+    // Routing ke Admin table Pengguna
+    Route::get('/users', [UserController::class, 'index'])->name('users.index');
+    Route::post('/users', [UserController::class, 'store'])->name('users.store');
+    Route::put('/users/{user}', [UserController::class, 'update'])->name('users.update');
+    Route::delete('/users/{user}', [UserController::class, 'destroy'])->name('users.destroy');
 
-// Routing ke Admin table Stok
-Route::get('/stock', [StockController::class, 'index'])->name('stock.index');
-Route::post('/stock/update/{productId}', [StockController::class, 'updateStock'])->name('stock.update');
-Route::post('/stock/minimum/{productId}', [StockController::class, 'updateMinimumStock'])->name('stock.minimum');
+    // Routing ke Admin table Stok
+    Route::get('/stock', [StockController::class, 'index'])->name('stock.index');
+    Route::post('/stock/update/{productId}', [StockController::class, 'updateStock'])->name('stock.update');
+    Route::post('/stock/minimum/{productId}', [StockController::class, 'updateMinimumStock'])->name('stock.minimum');
 
-// Routing ke Admin table Laporan
-Route::get('/admin-laporan', [LaporanController::class, 'index'])->name('laporan.index');
-Route::get('/manager-laporan', [LaporanController::class, 'managerGudangLaporan'])->name('manager.laporan');
-Route::post('/stock/minimum/{id}', [ProductController::class, 'updateMinimumStock'])->name('products.minimumStock');
+    // Routing ke Admin table Laporan
+    Route::get('/admin-laporan', [LaporanController::class, 'index'])->name('laporan.index');
+});
+
+// Routing ke Manager Gudang Laporan (khusus Manajer Gudang)
+Route::get('/manager-laporan', [LaporanController::class, 'managerGudangLaporan'])->name('manager.laporan')->middleware('role:Manajer Gudang');
+
+// Routing untuk update minimum stok oleh Admin (redundant dengan atas, pastikan gak bentrok)
+Route::post('/stock/minimum/{id}', [ProductController::class, 'updateMinimumStock'])->name('products.minimumStock')->middleware('role:Admin');
