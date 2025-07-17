@@ -26,7 +26,7 @@ class UserController extends Controller
         $user = User::create([
             'name' => $request->name,
             'email' => $request->email,
-            'password' => bcrypt($request->password),
+            'password' => $request->password,
             'role' => $request->role,
         ]);
 
@@ -47,7 +47,7 @@ class UserController extends Controller
 
         $user->name = $request->name;
         $user->email = $request->email;
-        $user->password = bcrypt($request->password);
+        $user->password = $request->password;
 
 
         if ($request->filled('password')) {
