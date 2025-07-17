@@ -20,16 +20,22 @@ class SignInController extends Controller
         // Temukan pengguna berdasarkan email
         $user = DB::table('users')->where('email', $request->email)->first();
 
-        // Verifikasi jika pengguna ada dan passwordnya cocok
-        if ($user && $user->password === $request->password) { 
-            // Jika password cocok dengan plaintext
-            Auth::loginUsingId($user->id); // Login pengguna menggunakan ID
-            $request->session()->regenerate(); // Regenerate session 
+        if ($user && $user->password === $request->password) {
+            Auth::loginUsingId($user->id);
+            $request->session()->regenerate();
 
-            return redirect()->intended('/admin-dashboard'); // Arahkan ke dashboard atau halaman lainnya
+            // Redirect berdasarkan role
+            $normalizedRole = strtolower(str_replace(' ', '_', $user->role));
+            switch ($normalizedRole) {
+                case 'admin':
+                    return redirect()->route('dashboard.index');
+                case 'manajer_gudang':
+                    return redirect()->route('dashboard.manager');
+                case 'staff_gudang':
+                    return redirect()->route('dashboard.staff');
+                default:
+                    return redirect()->route('login.form')->with('loginError', 'Role tidak dikenali');
+            }
         }
-
-        // Jika login gagal
-        return back()->with('loginError', 'Email atau password salah');
     }
 }
