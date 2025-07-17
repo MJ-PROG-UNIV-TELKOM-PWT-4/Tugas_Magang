@@ -222,6 +222,13 @@ Route::middleware('role:Admin')->group(function () {
     Route::get('/admin-laporan', [LaporanController::class, 'index'])->name('laporan.index');
 });
 
+
+// Routing untuk update stok: TERBUKA untuk 3 ROLE
+Route::post('/stock/update/{productId}', [StockController::class, 'updateStock'])
+    ->middleware(['role:Admin,Manajer Gudang,Staff Gudang'])
+    ->name('stock.update');
+
+
 // Routing ke Manager Gudang Laporan (khusus Manajer Gudang)
 Route::get('/manager-laporan', [LaporanController::class, 'managerGudangLaporan'])->name('manager.laporan')->middleware('role:Manajer Gudang');
 
