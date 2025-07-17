@@ -191,6 +191,7 @@ Route::get('/admin-dashboard', [LaporanController::class, 'dashboard'])->name('d
 // Routing ke Admin table Produk
 Route::get('/products', [ProductController::class, 'index'])->name('products.index');
 Route::post('/products', [ProductController::class, 'store'])->name('products.store');
+Route::get('/products/export-pdf', [ProductController::class, 'exportPdf'])->name('products.export.pdf');
 Route::get('/products/{product}', [ProductController::class, 'show'])->name('products.show');
 Route::put('/products/{product}', [ProductController::class, 'update'])->name('products.update');
 Route::delete('/products/{product}', [ProductController::class, 'destroy'])->name('products.destroy');
