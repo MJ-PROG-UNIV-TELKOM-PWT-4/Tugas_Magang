@@ -5,9 +5,9 @@ namespace App\Http\Controllers\Auth;
 use App\Http\Controllers\Controller;
 use App\Models\Product;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\DB; // Tambahkan ini
-use Dompdf\Dompdf; // Tambahkan ini juga
-use Dompdf\Options; // Dan ini
+use Illuminate\Support\Facades\DB;
+use Dompdf\Dompdf;
+use Dompdf\Options;
 
 class ProductController extends Controller
 {
