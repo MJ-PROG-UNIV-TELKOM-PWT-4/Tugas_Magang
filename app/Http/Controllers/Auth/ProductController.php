@@ -97,15 +97,16 @@ class ProductController extends Controller
     {
         $products = DB::table('products')
             ->join('categories', 'products.category_id', '=', 'categories.id')
-            ->select('products.*', 'categories.name as category_name')
+            ->join('suppliers', 'products.supplier_id', '=', 'suppliers.id')
+            ->select('products.*', 'categories.name as category_name', 'suppliers.name as supplier_name')
             ->get();
-
+            
         $options = new Options();
         $options->set('defaultFont', 'Arial');
         $options->set('isHtml5ParserEnabled', true);
-        
+    
         $dompdf = new Dompdf($options);
-        
+    
         // HTML langsung di dalam controller
         $html = '
         <!DOCTYPE html>
@@ -162,20 +163,19 @@ class ProductController extends Controller
                 <p>Sistem Manajemen Stok Barang</p>
                 <p>Tanggal Export: ' . date('d F Y, H:i:s') . '</p>
             </div>
-
             <table>
                 <thead>
                     <tr>
                         <th width="5%">No</th>
                         <th width="15%">Nama Produk</th>
                         <th width="15%">Kategori</th>
-                        <th width="10%">ID Supplier</th>
-                        <th width="40%">Attribut Produk</th>
+                        <th width="15%">Supplier</th>
+                        <th width="35%">Attribut Produk</th>
                         <th width="15%">Stok Minimum</th>
                     </tr>
                 </thead>
                 <tbody>';
-        
+    
         // Generate table rows
         foreach($products as $index => $product) {
             $html .= '
@@ -183,27 +183,26 @@ class ProductController extends Controller
                         <td>' . ($index + 1) . '</td>
                         <td>' . htmlspecialchars($product->name) . '</td>
                         <td>' . htmlspecialchars($product->category_name) . '</td>
-                        <td>' . htmlspecialchars($product->supplier_id) . '</td>
+                        <td>' . htmlspecialchars($product->supplier_name) . '</td>
                         <td>' . htmlspecialchars($product->description) . '</td>
                         <td>' . htmlspecialchars($product->minimum_stock) . '</td>
                     </tr>';
         }
-        
+    
         $html .= '
                 </tbody>
             </table>
-
             <div class="footer">
                 <p>Total Produk: ' . count($products) . '</p>
                 <p>Dicetak pada: ' . date('d F Y, H:i:s') . '</p>
             </div>
         </body>
         </html>';
-        
+    
         $dompdf->loadHtml($html);
         $dompdf->setPaper('A4', 'landscape');
         $dompdf->render();
-        
+    
         return $dompdf->stream('Data_Produk_' . date('Y-m-d_H-i-s') . '.pdf');
     }
 }
