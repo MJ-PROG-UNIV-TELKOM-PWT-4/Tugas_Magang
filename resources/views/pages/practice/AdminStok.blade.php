@@ -158,7 +158,7 @@
                     <input type="number" name="quantity" id="barang_keluar" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500" placeholder="Masukkan jumlah barang keluar" required>
                 </div>
 
-                <div>
+                <div class="mt-4">
                     <label for="tanggal_keluar" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Tanggal Keluar</label>
                     <input type="date" name="date" id="tanggal_keluar" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500" required>
                 </div>
@@ -241,6 +241,7 @@
             tanggalKeluarInput.setAttribute('required', 'required');
         } else if (statusSelect.value === 'Ditolak') {
             // Set barang_masuk menjadi 0 jika status "Ditolak"
+            keluarFields.classList.add('hidden');
             document.getElementById('barang_masuk').value = 0; // Pastikan untuk menambahkan field ini ke formulir
         } else {
             // Ketika status bukan "Dikeluarkan" atau "Ditolak"
