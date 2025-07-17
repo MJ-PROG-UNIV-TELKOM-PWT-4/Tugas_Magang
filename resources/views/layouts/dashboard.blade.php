@@ -7,7 +7,7 @@
     <meta name="author" content="#" />
     <meta name="generator" content="Laravel" />
 
-    <title>Stockify</title>
+    <title id="page-title">Stockify</title>
     @vite(['resources/css/app.css', 'resources/js/app.js'])
 
     <link rel="canonical" href="{{ request()->fullUrl() }}" />
@@ -104,4 +104,13 @@
 
         setInterval(updateClock, 1000);
         updateClock();
-    </script>
+
+        document.addEventListener('DOMContentLoaded', function () {
+    const settings = JSON.parse(localStorage.getItem('appSettings')) || {};
+    if (settings.appName) {
+        document.title = settings.appName; // tab title
+        const titleEl = document.getElementById('page-title');
+        if (titleEl) titleEl.textContent = settings.appName;
+    }
+});
+</script>
